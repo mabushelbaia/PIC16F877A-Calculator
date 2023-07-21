@@ -1,0 +1,5 @@
+Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 1 : Found directive in column 1. (PROCESSOR)
+Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 2 : Found directive in column 1. (INCLUDE)
+Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 5 : Found directive in column 1. (__CONFIG)
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 57 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 61 : Using default destination of 1 (file).
