@@ -1,4 +1,4 @@
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  1
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ Warning[205]: Found directive in column 1. (__CONFIG)
 000D   01A8           00039         CLRF TEMP_W 
 000E   0103           00040         CLRW
 000F                  00041 START: 
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  2
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -88,10 +88,8 @@ Message[305]: Using default destination of 1 (file).
 0021   0008           00062         RETURN
                       00063 
 0022                  00064 loop:
-0022   2???           00065         GOTO loop
-                      00066 
-3731                  00067         END
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  3
+3731                  00065         END
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  3
 
 
 SYMBOL TABLE
@@ -150,7 +148,7 @@ CHS0                              00000003
 CHS1                              00000004
 CHS2                              00000005
 CIS                               00000003
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  4
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  4
 
 
 SYMBOL TABLE
@@ -209,7 +207,7 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  5
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  5
 
 
 SYMBOL TABLE
@@ -268,7 +266,7 @@ R2_MSB                            00000023
 RA0                               00000000
 RA1                               00000001
 RA2                               00000002
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  6
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  6
 
 
 SYMBOL TABLE
@@ -327,7 +325,7 @@ R_NOT_W                           00000002
 R_W                               00000002
 S                                 00000003
 SEN                               00000000
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  7
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  7
 
 
 SYMBOL TABLE
@@ -386,7 +384,7 @@ TMR2ON                            00000002
 TOUTPS0                           00000003
 TOUTPS1                           00000004
 TOUTPS2                           00000005
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  8
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  8
 
 
 SYMBOL TABLE
@@ -445,7 +443,7 @@ UA                                00000001
 W                                 00000000
 WCOL                              00000007
 WR                                00000001
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:13:06         PAGE  9
+MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  9
 
 
 SYMBOL TABLE

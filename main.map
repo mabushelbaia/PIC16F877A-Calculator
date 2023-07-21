@@ -1,12 +1,12 @@
 MPLINK 4.48, Linker
-Linker Map File - Created Fri Jul 21 16:13:07 2023
+Linker Map File - Created Fri Jul 21 16:26:52 2023
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000004
                    .cinit    romdata   0x000002    program   0x000004
-                   .org_1       code   0x000004    program   0x00003e
+                   .org_1       code   0x000004    program   0x00003c
       .config_2007_MAIN.O       code   0x002007    program   0x000002
 
 
@@ -14,9 +14,9 @@ Linker Map File - Created Fri Jul 21 16:13:07 2023
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x000022      
+                            0x000000    0x000021      
                             0x002007    0x002007      
-            36 out of 8454 program addresses used, program memory utilization is 0%
+            35 out of 8454 program addresses used, program memory utilization is 0%
 
 
 
