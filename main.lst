@@ -1,4 +1,4 @@
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  1
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -32,64 +32,78 @@ Warning[205]: Found directive in column 1. (__CONFIG)
   00000025            00014 TEMP_MSB EQU 0x25
   00000026            00015 RESULT_LSB EQU 0x26
   00000027            00016 RESULT_MSB EQU 0x27
-  00000028            00017 TEMP_W EQU 0x28
-                      00018 ; ---------------------------------
-                      00019 ; ----------- Code Area -----------
+                      00017 
+                      00018 
+  00000028            00019 TEMP_W EQU 0x28
                       00020 ; ---------------------------------
-                      00021         ORG 0x00
-0000   0000           00022         NOP
-0001   2???           00023         GOTO INIT
-                      00024 
-                      00025         ORG 0x04
-0004   2???           00026         GOTO ISR
-                      00027 
-0005                  00028 ISR: 
-0005   0000           00029         NOP
-0006   0009           00030         retfie
-                      00031 
-0007                  00032 INIT:
-0007   01A0           00033         CLRF  R1_LSB 
-0008   01A1           00034         CLRF R1_MSB 
-0009   01A2           00035         CLRF R2_LSB 
-000A   01A3           00036         CLRF R2_MSB 
-000B   01A4           00037         CLRF TEMP_LSB 
-000C   01A5           00038         CLRF TEMP_MSB 
-000D   01A8           00039         CLRF TEMP_W 
-000E   0103           00040         CLRW
-000F                  00041 START: 
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  2
+                      00021 ; ----------- Code Area -----------
+                      00022 ; ---------------------------------
+                      00023         ORG 0x00
+0000   0000           00024         NOP
+0001   2???           00025         GOTO INIT
+                      00026 
+                      00027         ORG 0x04
+0004   2???           00028         GOTO ISR
+                      00029 
+0005                  00030 ISR: 
+0005   0000           00031         NOP
+0006   0009           00032         retfie
+                      00033 
+0007                  00034 INIT:
+0007   01A0           00035         CLRF  R1_LSB 
+0008   01A1           00036         CLRF R1_MSB 
+0009   01A2           00037         CLRF R2_LSB 
+000A   01A3           00038         CLRF R2_MSB 
+000B   01A4           00039         CLRF TEMP_LSB 
+000C   01A5           00040         CLRF TEMP_MSB 
+000D   01A8           00041         CLRF TEMP_W 
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000F   30FF           00042         MOVLW 0xff
-0010   00A0           00043         MOVWF R1_LSB
-0011   00A2           00044         MOVWF R2_LSB
-0012   300F           00045         MOVLW 0x0f
-0013   00A1           00046         MOVWF R1_MSB
-0014   00A3           00047         MOVWF R2_MSB
-0015   2???           00048         CALL ADD
-0016   2???           00049         GOTO loop
-                      00050 
-0017                  00051 ADD:
-0017   01A6           00052         CLRF RESULT_LSB
-0018   01A7           00053         CLRF RESULT_MSB
-0019   0820           00054         MOVF R1_LSB, 0
-001A   0722           00055         ADDWF R2_LSB, 0
-001B   1803           00056         BTFSC STATUS, 0
+000E   0103           00042         CLRW
+000F                  00043 START: 
+000F   30FF           00044         MOVLW 0xff
+0010   00A0           00045         MOVWF R1_LSB
+0011   00A2           00046         MOVWF R2_LSB
+0012   00A4           00047         MOVWF TEMP_LSB
+0013   300F           00048         MOVLW 0x0f
+0014   00A1           00049         MOVWF R1_MSB
+0015   00A5           00050         MOVWF TEMP_MSB
+0016   2???           00051         CALL SUB
+0017   2???           00052         GOTO loop
+                      00053 
+0018                  00054 ADD:
+0018   01A6           00055         CLRF RESULT_LSB
+0019   01A7           00056         CLRF RESULT_MSB
+001A   0820           00057         MOVF R1_LSB, 0
+001B   0722           00058         ADDWF R2_LSB, 0
+001C   1803           00059         BTFSC STATUS, 0
 Message[305]: Using default destination of 1 (file).
-001C   0AA7           00057         INCF RESULT_MSB
-001D   00A6           00058         MOVWF RESULT_LSB
-001E   0821           00059         MOVF R1_MSB, 0
-001F   0723           00060         ADDWF R2_MSB, 0
+001D   0AA7           00060         INCF RESULT_MSB
+001E   00A6           00061         MOVWF RESULT_LSB
+001F   0821           00062         MOVF R1_MSB, 0
+0020   0723           00063         ADDWF R2_MSB, 0
 Message[305]: Using default destination of 1 (file).
-0020   07A7           00061         ADDWF RESULT_MSB
-0021   0008           00062         RETURN
-                      00063 
-0022                  00064 loop:
-3731                  00065         END
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  3
+0021   07A7           00064         ADDWF RESULT_MSB
+0022   0008           00065         RETURN
+0023                  00066 SUB:
+0023   0922           00067         COMF R2_LSB, 0
+0024   0724           00068         ADDWF TEMP_LSB, 0
+0025   3E01           00069         ADDLW 0x01
+0026   1803           00070         BTFSC STATUS, 0
+Message[305]: Using default destination of 1 (file).
+0027   0AA5           00071         INCF TEMP_MSB
+0028   00A4           00072         MOVWF TEMP_LSB
+0029   0923           00073         COMF R2_MSB, 0
+002A   0725           00074         ADDWF TEMP_MSB, 0
+002B   00A5           00075         MOVWF TEMP_MSB
+002C   0008           00076         RETURN
+002D                  00077 loop:
+3731                  00078         END
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  3
 
 
 SYMBOL TABLE
@@ -103,7 +117,7 @@ ADCON1                            0000009F
 ADCS0                             00000006
 ADCS1                             00000007
 ADCS2                             00000006
-ADD                               00000017
+ADD                               00000018
 ADDEN                             00000003
 ADFM                              00000007
 ADIE                              00000006
@@ -148,7 +162,7 @@ CHS0                              00000003
 CHS1                              00000004
 CHS2                              00000005
 CIS                               00000003
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  4
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  4
 
 
 SYMBOL TABLE
@@ -207,7 +221,7 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  5
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  5
 
 
 SYMBOL TABLE
@@ -266,7 +280,7 @@ R2_MSB                            00000023
 RA0                               00000000
 RA1                               00000001
 RA2                               00000002
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  6
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  6
 
 
 SYMBOL TABLE
@@ -325,7 +339,7 @@ R_NOT_W                           00000002
 R_W                               00000002
 S                                 00000003
 SEN                               00000000
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  7
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  7
 
 
 SYMBOL TABLE
@@ -350,6 +364,7 @@ SSPOV                             00000006
 SSPSTAT                           00000094
 START                             0000000F
 STATUS                            00000003
+SUB                               00000023
 SYNC                              00000004
 T0CS                              00000005
 T0IE                              00000005
@@ -383,13 +398,13 @@ TMR2IF                            00000001
 TMR2ON                            00000002
 TOUTPS0                           00000003
 TOUTPS1                           00000004
-TOUTPS2                           00000005
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  8
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TOUTPS2                           00000005
 TOUTPS3                           00000006
 TRISA                             00000085
 TRISA0                            00000000
@@ -442,13 +457,13 @@ TXSTA                             00000098
 UA                                00000001
 W                                 00000000
 WCOL                              00000007
-WR                                00000001
-MPASM  5.50                          MAIN.ASM   7-21-2023  16:26:51         PAGE  9
+MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+WR                                00000001
 WREN                              00000002
 WRERR                             00000003
 Z                                 00000002
@@ -491,10 +506,10 @@ _WRT_OFF                          00003FFF
 _XT_OSC                           00003FFD
 __16F877A                         00000001
 __DEBUG                           1
-loop                              00000022
+loop                              0000002D
 
 Errors   :     0
 Warnings :     3 reported,     0 suppressed
-Messages :     2 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
 
 
