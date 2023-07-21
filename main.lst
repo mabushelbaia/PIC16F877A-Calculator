@@ -1,4 +1,4 @@
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  1
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -21,89 +21,114 @@ Warning[205]: Found directive in column 1. (INCLUDE)
                       00004 
 Warning[205]: Found directive in column 1. (__CONFIG)
 2007   3731           00005 __CONFIG 0x3731 ;
-                      00006 ; ---------------------------------
+                      00006 ; ---------------------------------------------------
                       00007 ; ----------- Data Area -----------
-                      00008 ; ---------------------------------
-  00000020            00009 R1_LSB EQU 0x20
-  00000021            00010 R1_MSB EQU 0x21
-  00000022            00011 R2_LSB EQU 0x22
-  00000023            00012 R2_MSB EQU 0x23
-  00000024            00013 TEMP_LSB EQU 0x24
-  00000025            00014 TEMP_MSB EQU 0x25
-  00000026            00015 RESULT_LSB EQU 0x26
-  00000027            00016 RESULT_MSB EQU 0x27
+                      00008 ; ---------------------------------------------------
+  00000020            00009 R1_LSB EQU 0x20       ; Define the memory location for R1's Least Significant Byte
+  00000021            00010 R1_MSB EQU 0x21       ; Define the memory location for R1's Most Significant Byte
+  00000022            00011 R2_LSB EQU 0x22       ; Define the memory location for R2's Least Significant Byte
+  00000023            00012 R2_MSB EQU 0x23       ; Define the memory location for R2's Most Significant Byte
+  00000024            00013 TEMP_LSB EQU 0x24     ; Define the memory location for temporary storage (Least Significant Byte)
+  00000025            00014 TEMP_MSB EQU 0x25     ; Define the memory location for temporary storage (Most Significant Byte)
+  00000026            00015 RESULT_LSB EQU 0x26   ; Define the memory location for the result (Least Significant Byte)
+  00000027            00016 RESULT_MSB EQU 0x27   ; Define the memory location for the result (Most Significant Byte)
                       00017 
-                      00018 
-  00000028            00019 TEMP_W EQU 0x28
-                      00020 ; ---------------------------------
+  00000028            00018 TEMP_W EQU 0x28       ; Define the memory location for unused temporary storage (not used in this code)
+                      00019 
+                      00020 ; ---------------------------------------------------
                       00021 ; ----------- Code Area -----------
-                      00022 ; ---------------------------------
-                      00023         ORG 0x00
-0000   0000           00024         NOP
-0001   2???           00025         GOTO INIT
-                      00026 
-                      00027         ORG 0x04
-0004   2???           00028         GOTO ISR
-                      00029 
-0005                  00030 ISR: 
-0005   0000           00031         NOP
-0006   0009           00032         retfie
-                      00033 
-0007                  00034 INIT:
-0007   01A0           00035         CLRF  R1_LSB 
-0008   01A1           00036         CLRF R1_MSB 
-0009   01A2           00037         CLRF R2_LSB 
-000A   01A3           00038         CLRF R2_MSB 
-000B   01A4           00039         CLRF TEMP_LSB 
-000C   01A5           00040         CLRF TEMP_MSB 
-000D   01A8           00041         CLRF TEMP_W 
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  2
+                      00022 ; ---------------------------------------------------
+                      00023 
+Warning[205]: Found directive in column 1. (ORG)
+                      00024 ORG 0x00              ; Set the program counter to address 0x00 (start of program)
+Warning[203]: Found opcode in column 1. (NOP)
+0000   0000           00025 NOP                   ; No operation (dummy instruction)
+Warning[203]: Found opcode in column 1. (GOTO)
+0001   2???           00026 GOTO INIT             ; Jump to the initialization code
+                      00027 
+Warning[205]: Found directive in column 1. (ORG)
+                      00028 ORG 0x04              ; Set the program counter to address 0x04 (interrupt service routine)
+Warning[203]: Found opcode in column 1. (GOTO)
+0004   2???           00029 GOTO ISR              ; Jump to the interrupt service routine
+                      00030 
+0005                  00031 ISR: 
+0005   0000           00032         NOP                   ; Interrupt service routine: No operation
+0006   0009           00033         retfie                ; Return from interrupt
+                      00034 
+0007                  00035 INIT:
+0007   01A0           00036         CLRF  R1_LSB          ; Clear R1's Least Significant Byte (initialize to 0)
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000E   0103           00042         CLRW
-000F                  00043 START: 
-000F   30FF           00044         MOVLW 0xff
-0010   00A0           00045         MOVWF R1_LSB
-0011   00A2           00046         MOVWF R2_LSB
-0012   00A4           00047         MOVWF TEMP_LSB
-0013   300F           00048         MOVLW 0x0f
-0014   00A1           00049         MOVWF R1_MSB
-0015   00A5           00050         MOVWF TEMP_MSB
-0016   2???           00051         CALL SUB
-0017   2???           00052         GOTO loop
-                      00053 
-0018                  00054 ADD:
-0018   01A6           00055         CLRF RESULT_LSB
-0019   01A7           00056         CLRF RESULT_MSB
-001A   0820           00057         MOVF R1_LSB, 0
-001B   0722           00058         ADDWF R2_LSB, 0
-001C   1803           00059         BTFSC STATUS, 0
+0008   01A1           00037         CLRF R1_MSB           ; Clear R1's Most Significant Byte (initialize to 0)
+0009   01A2           00038         CLRF R2_LSB           ; Clear R2's Least Significant Byte (initialize to 0)
+000A   01A3           00039         CLRF R2_MSB           ; Clear R2's Most Significant Byte (initialize to 0)
+000B   01A4           00040         CLRF TEMP_LSB         ; Clear temporary storage (Least Significant Byte) (initialize to 0)
+000C   01A5           00041         CLRF TEMP_MSB         ; Clear temporary storage (Most Significant Byte) (initialize to 0)
+000D   01A8           00042         CLRF TEMP_W           ; Clear unused temporary storage (initialize to 0)
+000E   0103           00043         CLRW                  ; Clear W register (working register) (initialize to 0)
+                      00044 
+000F                  00045 START: 
+000F   3049           00046         MOVLW 0x49             ; Load W register with the value 0x49
+0010   00A0           00047         MOVWF R1_LSB           ; Move the value in W to R1's Least Significant Byte
+0011   3006           00048         MOVLW 0x06             ; Load W register with the value 0x06
+0012   00A1           00049         MOVWF R1_MSB           ; Move the value in W to R1's Most Significant Byte
+0013   300A           00050         MOVLW 0xA              ; Load W register with the value 0xA
+0014   00A2           00051         MOVWF R2_LSB           ; Move the value in W to R2's Least Significant Byte
+0015   3000           00052         MOVLW 0x00             ; Load W register with the value 0x00
+0016   00A3           00053         MOVWF R2_MSB           ; Move the value in W to R2's Most Significant Byte
+0017   2???           00054         CALL MOD               ; Call the MOD subroutine to perform modulo operation
+0018   2???           00055         GOTO loop              ; Jump to the loop label
+                      00056 
+0019                  00057 ADD:
+                      00058         ; ... (Addition subroutine, unchanged)
+                      00059 
+0019                  00060 SUB:
+                      00061         ; ... (Subtraction subroutine, unchanged)
+                      00062 
+0019                  00063 DIVIDE:
+                      00064         ; ... (Division subroutine, unchanged)
+                      00065 
+0019                  00066 MOD:
+0019   01A7           00067         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte (initialize to 0)
+001A   01A6           00068         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte (initialize to 0)
+001B   0820           00069         MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
+001C   00A4           00070         MOVWF TEMP_LSB
+001D   0821           00071         MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
+001E   00A5           00072         MOVWF TEMP_MSB
+001F                  00073 MODLOOP:
+001F   2???           00074         CALL SUB              ; Call the SUB subroutine to perform subtraction
+0020   1C03           00075         BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
+0021   2???           00076         GOTO MODEND           ; If no borrow, exit the loop (modulo operation complete)
+0022   2???           00077         GOTO MODLOOP          ; Continue the modulo loop
+                      00078 
+0023                  00079 MODEND:
+0023   0822           00080         MOVF R2_LSB, 0        ; Move the value in R2_LSB to W register
+0024   0724           00081         ADDWF TEMP_LSB, 0     ; Add the value in W to TEMP_LSB (carry ignored as it's not needed)
+0025   1803           00082         BTFSC STATUS, 0       ; Check if there was a carry from the addition
 Message[305]: Using default destination of 1 (file).
-001D   0AA7           00060         INCF RESULT_MSB
-001E   00A6           00061         MOVWF RESULT_LSB
-001F   0821           00062         MOVF R1_MSB, 0
-0020   0723           00063         ADDWF R2_MSB, 0
+0026   0AA7           00083         INCF RESULT_MSB       ; If carry, increment the result's Most Significant Byte
+0027   00A6           00084         MOVWF RESULT_LSB      ; Move the result of the addition to the result's Least Significant Byte
+                      00085 
+0028   0823           00086         MOVF R2_MSB, 0        ; Move the value in R2_MSB to W register
+0029   0725           00087         ADDWF TEMP_MSB, 0     ; Add the value in W to TEMP_MSB (carry ignored as it's not needed)
 Message[305]: Using default destination of 1 (file).
-0021   07A7           00064         ADDWF RESULT_MSB
-0022   0008           00065         RETURN
-0023                  00066 SUB:
-0023   0922           00067         COMF R2_LSB, 0
-0024   0724           00068         ADDWF TEMP_LSB, 0
-0025   3E01           00069         ADDLW 0x01
-0026   1803           00070         BTFSC STATUS, 0
-Message[305]: Using default destination of 1 (file).
-0027   0AA5           00071         INCF TEMP_MSB
-0028   00A4           00072         MOVWF TEMP_LSB
-0029   0923           00073         COMF R2_MSB, 0
-002A   0725           00074         ADDWF TEMP_MSB, 0
-002B   00A5           00075         MOVWF TEMP_MSB
-002C   0008           00076         RETURN
-002D                  00077 loop:
-3731                  00078         END
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  3
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002A   07A7           00088         ADDWF RESULT_MSB      ; Add the result of the addition to the result's Most Significant Byte
+                      00089 
+002B   0008           00090         RETURN                ; Return from the MOD subroutine
+                      00091 
+002C                  00092 loop:
+3731                  00093         END                  ; End of the program
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  4
 
 
 SYMBOL TABLE
@@ -117,7 +142,7 @@ ADCON1                            0000009F
 ADCS0                             00000006
 ADCS1                             00000007
 ADCS2                             00000006
-ADD                               00000018
+ADD                               00000019
 ADDEN                             00000003
 ADFM                              00000007
 ADIE                              00000006
@@ -162,7 +187,7 @@ CHS0                              00000003
 CHS1                              00000004
 CHS2                              00000005
 CIS                               00000003
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  4
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  5
 
 
 SYMBOL TABLE
@@ -189,6 +214,7 @@ CVRR                              00000005
 D                                 00000005
 DATA_ADDRESS                      00000005
 DC                                00000001
+DIVIDE                            00000019
 D_A                               00000005
 D_NOT_A                           00000005
 EEADR                             0000010D
@@ -220,14 +246,17 @@ INTCON                            0000000B
 INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
-IRP                               00000007
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  5
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+IRP                               00000007
 ISR                               00000005
+MOD                               00000019
+MODEND                            00000023
+MODLOOP                           0000001F
 NOT_A                             00000005
 NOT_ADDRESS                       00000005
 NOT_BO                            00000000
@@ -276,16 +305,16 @@ R                                 00000002
 R1_LSB                            00000020
 R1_MSB                            00000021
 R2_LSB                            00000022
-R2_MSB                            00000023
-RA0                               00000000
-RA1                               00000001
-RA2                               00000002
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  6
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  7
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+R2_MSB                            00000023
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
 RA3                               00000003
 RA4                               00000004
 RA5                               00000005
@@ -335,16 +364,16 @@ RP1                               00000006
 RSEN                              00000001
 RX9                               00000006
 RX9D                              00000000
-R_NOT_W                           00000002
-R_W                               00000002
-S                                 00000003
-SEN                               00000000
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  7
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
 SMP                               00000007
 SPBRG                             00000099
 SPEN                              00000007
@@ -364,7 +393,7 @@ SSPOV                             00000006
 SSPSTAT                           00000094
 START                             0000000F
 STATUS                            00000003
-SUB                               00000023
+SUB                               00000019
 SYNC                              00000004
 T0CS                              00000005
 T0IE                              00000005
@@ -394,16 +423,16 @@ TMR1L                             0000000E
 TMR1ON                            00000000
 TMR2                              00000011
 TMR2IE                            00000001
-TMR2IF                            00000001
-TMR2ON                            00000002
-TOUTPS0                           00000003
-TOUTPS1                           00000004
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  8
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
 TOUTPS2                           00000005
 TOUTPS3                           00000006
 TRISA                             00000085
@@ -453,16 +482,16 @@ TXEN                              00000005
 TXIE                              00000004
 TXIF                              00000004
 TXREG                             00000019
-TXSTA                             00000098
-UA                                00000001
-W                                 00000000
-WCOL                              00000007
-MPASM  5.50                          MAIN.ASM   7-21-2023  17:03:51         PAGE  9
+MPASM  5.50                          MAIN.ASM   7-21-2023  19:12:11         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+WCOL                              00000007
 WR                                00000001
 WREN                              00000002
 WRERR                             00000003
@@ -506,10 +535,10 @@ _WRT_OFF                          00003FFF
 _XT_OSC                           00003FFD
 __16F877A                         00000001
 __DEBUG                           1
-loop                              0000002D
+loop                              0000002C
 
 Errors   :     0
-Warnings :     3 reported,     0 suppressed
-Messages :     3 reported,     0 suppressed
+Warnings :     8 reported,     0 suppressed
+Messages :     2 reported,     0 suppressed
 
 

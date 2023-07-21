@@ -1,6 +1,10 @@
 Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 1 : Found directive in column 1. (PROCESSOR)
 Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 2 : Found directive in column 1. (INCLUDE)
 Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 5 : Found directive in column 1. (__CONFIG)
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 60 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 64 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 71 : Using default destination of 1 (file).
+Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 24 : Found directive in column 1. (ORG)
+Warning[203] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 25 : Found opcode in column 1. (NOP)
+Warning[203] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 26 : Found opcode in column 1. (GOTO)
+Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 28 : Found directive in column 1. (ORG)
+Warning[203] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 29 : Found opcode in column 1. (GOTO)
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 83 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MAIN.ASM 88 : Using default destination of 1 (file).
