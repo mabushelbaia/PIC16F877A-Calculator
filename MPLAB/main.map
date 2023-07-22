@@ -1,0 +1,75 @@
+MPLINK 4.48, Linker
+Linker Map File - Created Sat Jul 22 14:30:58 2023
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000004
+                   .cinit    romdata   0x000002    program   0x000004
+                   .org_1       code   0x000004    program   0x0001c6
+      .config_2007_MAIN.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0000e6      
+                            0x002007    0x002007      
+            232 out of 8454 program addresses used, program memory utilization is 2%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                      ADD   0x00002d    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   DIVEND   0x000051    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   DIVIDE   0x000044    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                  DIVLOOP   0x00004a    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+             ENABLE_PULSE   0x00009c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                     INIT   0x00000f    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+             INIT_DISPLAY   0x000070    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+         INTITIAL_MESSAGE   0x0000c9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      ISR   0x000005    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      MOD   0x000052    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   MODEND   0x00005c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                  MODLOOP   0x000058    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+         SEND_LCD_COMMAND   0x0000b9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+            SEND_LCD_DATA   0x0000a9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    START   0x000023    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      SUB   0x000038    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                     loop   0x0000e6    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    loop1   0x00006c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    loopX   0x000066    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    onems   0x00006a    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      xms   0x000065    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                      ISR   0x000005    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                     INIT   0x00000f    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    START   0x000023    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      ADD   0x00002d    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      SUB   0x000038    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   DIVIDE   0x000044    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                  DIVLOOP   0x00004a    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   DIVEND   0x000051    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      MOD   0x000052    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                  MODLOOP   0x000058    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                   MODEND   0x00005c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                      xms   0x000065    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    loopX   0x000066    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    onems   0x00006a    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                    loop1   0x00006c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+             INIT_DISPLAY   0x000070    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+             ENABLE_PULSE   0x00009c    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+            SEND_LCD_DATA   0x0000a9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+         SEND_LCD_COMMAND   0x0000b9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+         INTITIAL_MESSAGE   0x0000c9    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+                     loop   0x0000e6    program     static C:\Users\mabus\Desktop\project_mp\main.asm
+
+
