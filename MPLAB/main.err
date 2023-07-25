@@ -4,33 +4,33 @@ Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 6 : Found directiv
 Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 41 : Found directive in column 1. (ORG)
 Warning[203] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 42 : Found opcode in column 1. (NOP)
 Warning[205] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 45 : Found directive in column 1. (ORG)
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 55 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 57 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 93 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 109 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 59 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 104 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 120 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 136 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 131 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 147 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 164 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 158 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 175 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 191 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 186 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 202 : Using default destination of 1 (file).
-Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 281 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 298 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 213 : Using default destination of 1 (file).
+Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 288 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 295 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 300 : Register in operand not in bank 0.  Ensure that bank bits are correct.
 Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 303 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 306 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 307 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 317 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 325 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 379 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 386 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 397 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 404 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 500 : Using default destination of 1 (file).
+Message[302] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 304 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 321 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 329 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 383 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 390 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 401 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 408 : Using default destination of 1 (file).
 Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 504 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 511 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 514 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 532 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 534 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 555 : Using default destination of 1 (file).
-Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 560 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 508 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 515 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 518 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 536 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 538 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 559 : Using default destination of 1 (file).
+Message[305] C:\USERS\MABUS\DESKTOP\PROJECT_MP\MPLAB\MAIN.ASM 564 : Using default destination of 1 (file).

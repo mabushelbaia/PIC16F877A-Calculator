@@ -1,12 +1,12 @@
 MPLINK 4.48, Linker
-Linker Map File - Created Wed Jul 26 00:02:17 2023
+Linker Map File - Created Wed Jul 26 01:11:54 2023
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000004
                    .cinit    romdata   0x000002    program   0x000004
-                   .org_1       code   0x000004    program   0x0003a8
+                   .org_1       code   0x000004    program   0x0003ba
       .config_2007_MAIN.O       code   0x002007    program   0x000002
 
 
@@ -14,128 +14,130 @@ Linker Map File - Created Wed Jul 26 00:02:17 2023
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x0001d7      
+                            0x000000    0x0001e0      
                             0x002007    0x002007      
-            473 out of 8454 program addresses used, program memory utilization is 5%
+            482 out of 8454 program addresses used, program memory utilization is 5%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                      ADD   0x000181    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-          BUTTON_INTERUPT   0x000017    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   DIVEND   0x0001a5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   DIVIDE   0x000198    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                  DIVLOOP   0x00019e    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             ENABLE_PULSE   0x000114    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   HexBCD   0x00015e    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C1   0x00002f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C2   0x000039    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C3   0x000051    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C4   0x000069    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C5   0x000081    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                     INIT   0x0000b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             INIT_DISPLAY   0x0000f4    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             INTERUPT_END   0x000099    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-            INTERUPT_INIT   0x0000bf    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         INTITIAL_MESSAGE   0x000141    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      MOD   0x0001a6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   MODEND   0x0001b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                  MODLOOP   0x0001ac    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               PORTS_INIT   0x0000d9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C1   0x0000a1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C2   0x0000a4    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C3   0x0000a7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C4   0x0000aa    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C5   0x0000ad    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         SEND_LCD_COMMAND   0x000131    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-            SEND_LCD_DATA   0x000121    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    SKIP1   0x000014    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    START   0x0000bb    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      SUB   0x00018c    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-           TIMER_INTERUPT   0x000009    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   adjBCD   0x000176    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   adjDEC   0x00016c    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c2_to_five   0x000047    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c2_to_nine   0x00003d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c3_to_five   0x00005f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c3_to_nine   0x000055    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c4_to_nine   0x00006d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              c4_to_three   0x000077    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c5_to_five   0x00008f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c5_to_nine   0x000085    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c3   0x0001b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c4   0x0001c3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c5   0x0001d2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c2_c4   0x0001be    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c2_c5   0x0001cd    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c3_c5   0x0001c8    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                     loop   0x0001d7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    loop1   0x0000f0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   loop16   0x000164    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    loopX   0x0000ea    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    onems   0x0000ee    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      xms   0x0000e9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      ADD   0x00018a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+          BUTTON_INTERUPT   0x000022    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   DIVEND   0x0001ae    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   DIVIDE   0x0001a1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                  DIVLOOP   0x0001a7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             ENABLE_PULSE   0x00011d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   HexBCD   0x000167    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C1   0x00003b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C2   0x000045    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C3   0x00005d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C4   0x000075    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C5   0x00008d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     INIT   0x0000bc    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             INIT_DISPLAY   0x0000fd    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             INTERUPT_END   0x0000a5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+            INTERUPT_INIT   0x0000ce    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         INTITIAL_MESSAGE   0x00014a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      MOD   0x0001af    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   MODEND   0x0001b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                  MODLOOP   0x0001b5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               PORTS_INIT   0x0000db    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C1   0x0000ad    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C2   0x0000b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C3   0x0000b3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C4   0x0000b6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C5   0x0000b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              RESET_TIMER   0x0000ec    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         SEND_LCD_COMMAND   0x00013a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+            SEND_LCD_DATA   0x00012a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     SKIP   0x000018    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    START   0x0000ca    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      SUB   0x000195    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+           TIMER_INTERUPT   0x000008    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   adjBCD   0x00017f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   adjDEC   0x000175    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c2_to_five   0x000053    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c2_to_nine   0x000049    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c3_to_five   0x00006b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c3_to_nine   0x000061    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c4_to_nine   0x000079    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              c4_to_three   0x000083    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c5_to_five   0x00009b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c5_to_nine   0x000091    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c3   0x0001c2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c4   0x0001cc    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c5   0x0001db    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c2_c4   0x0001c7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c2_c5   0x0001d6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c3_c5   0x0001d1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     loop   0x0001e0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    loop1   0x0000f9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   loop16   0x00016d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    loopX   0x0000f3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    onems   0x0000f7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      xms   0x0000f2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
 
 
 
                               Symbols - Sorted by Address
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-           TIMER_INTERUPT   0x000009    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    SKIP1   0x000014    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-          BUTTON_INTERUPT   0x000017    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C1   0x00002f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C2   0x000039    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c2_to_nine   0x00003d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c2_to_five   0x000047    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C3   0x000051    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c3_to_nine   0x000055    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c3_to_five   0x00005f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C4   0x000069    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c4_to_nine   0x00006d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              c4_to_three   0x000077    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   INC_C5   0x000081    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c5_to_nine   0x000085    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               c5_to_five   0x00008f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             INTERUPT_END   0x000099    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C1   0x0000a1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C2   0x0000a4    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C3   0x0000a7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C4   0x0000aa    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         RESET_COUNTER_C5   0x0000ad    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                     INIT   0x0000b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    START   0x0000bb    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-            INTERUPT_INIT   0x0000bf    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-               PORTS_INIT   0x0000d9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      xms   0x0000e9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    loopX   0x0000ea    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    onems   0x0000ee    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                    loop1   0x0000f0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             INIT_DISPLAY   0x0000f4    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-             ENABLE_PULSE   0x000114    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-            SEND_LCD_DATA   0x000121    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         SEND_LCD_COMMAND   0x000131    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-         INTITIAL_MESSAGE   0x000141    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   HexBCD   0x00015e    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   loop16   0x000164    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   adjDEC   0x00016c    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   adjBCD   0x000176    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      ADD   0x000181    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      SUB   0x00018c    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   DIVIDE   0x000198    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                  DIVLOOP   0x00019e    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   DIVEND   0x0001a5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                      MOD   0x0001a6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                  MODLOOP   0x0001ac    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                   MODEND   0x0001b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c3   0x0001b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c2_c4   0x0001be    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c4   0x0001c3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c3_c5   0x0001c8    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c2_c5   0x0001cd    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-              check_c1_c5   0x0001d2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
-                     loop   0x0001d7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+           TIMER_INTERUPT   0x000008    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     SKIP   0x000018    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+          BUTTON_INTERUPT   0x000022    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C1   0x00003b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C2   0x000045    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c2_to_nine   0x000049    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c2_to_five   0x000053    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C3   0x00005d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c3_to_nine   0x000061    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c3_to_five   0x00006b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C4   0x000075    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c4_to_nine   0x000079    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              c4_to_three   0x000083    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   INC_C5   0x00008d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c5_to_nine   0x000091    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               c5_to_five   0x00009b    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             INTERUPT_END   0x0000a5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C1   0x0000ad    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C2   0x0000b0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C3   0x0000b3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C4   0x0000b6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         RESET_COUNTER_C5   0x0000b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     INIT   0x0000bc    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    START   0x0000ca    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+            INTERUPT_INIT   0x0000ce    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+               PORTS_INIT   0x0000db    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              RESET_TIMER   0x0000ec    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      xms   0x0000f2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    loopX   0x0000f3    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    onems   0x0000f7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                    loop1   0x0000f9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             INIT_DISPLAY   0x0000fd    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+             ENABLE_PULSE   0x00011d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+            SEND_LCD_DATA   0x00012a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         SEND_LCD_COMMAND   0x00013a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+         INTITIAL_MESSAGE   0x00014a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   HexBCD   0x000167    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   loop16   0x00016d    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   adjDEC   0x000175    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   adjBCD   0x00017f    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      ADD   0x00018a    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      SUB   0x000195    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   DIVIDE   0x0001a1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                  DIVLOOP   0x0001a7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   DIVEND   0x0001ae    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                      MOD   0x0001af    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                  MODLOOP   0x0001b5    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                   MODEND   0x0001b9    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c3   0x0001c2    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c2_c4   0x0001c7    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c4   0x0001cc    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c3_c5   0x0001d1    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c2_c5   0x0001d6    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+              check_c1_c5   0x0001db    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
+                     loop   0x0001e0    program     static C:\Users\mabus\Desktop\project_mp\MPLAB\main.asm
 
 
