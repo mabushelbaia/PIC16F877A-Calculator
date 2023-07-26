@@ -1,4 +1,4 @@
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  1
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -45,920 +45,1030 @@ Warning[205]: Found directive in column 1. (__CONFIG)
   00000036            00027 BCDvalM EQU 0x36
   00000037            00028 BCDvalL EQU 0x37
   00000038            00029 MCount  EQU 0x38
-  00000039            00030 NumbHi  EQU 0x39
-  0000003A            00031 NumbLo  EQU 0x3A        
-  0000003E            00032 lo EQU 0x3E
-  0000003F            00033 hi EQU 0x3F
-  0000003B            00034 TIMER_INDEX EQU 0x3B
-  0000003C            00035 Temp EQU 0x3C
-  0000002E            00036 NEXT_STATE EQU 0x2E
-  0000002F            00037 OPERATION EQU 0x2F
-  0000003D            00038 IS_VISITED EQU 0x3D
-  00000005            00039 E EQU 5
-  00000004            00040 RS EQU 4
-  00000028            00041 TEMP_W EQU 0x28       ; Define the memory location for unused temporary storage (not used in this code)
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  2
+  0000003E            00030 NUMHI EQU 0x3E
+  0000003F            00031 NUMLO EQU 0x3F
+  0000003B            00032 TIMER_INDEX EQU 0x3B
+  0000003C            00033 Temp EQU 0x3C
+  0000002E            00034 NEXT_STATE EQU 0x2E
+  0000002F            00035 OPERATION EQU 0x2F
+  0000003D            00036 IS_VISITED EQU 0x3D
+  00000005            00037 E EQU 5
+  00000004            00038 RS EQU 4
+  00000028            00039 TEMP_W EQU 0x28       ; Define the memory location for unused temporary storage (not used in this code)
+                      00040 ; ---------------------------------------------------
+                      00041 ; -----------                   Code Area                 -----------
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
                       00042 ; ---------------------------------------------------
-                      00043 ; -----------                   Code Area                 -----------
-                      00044 ; ---------------------------------------------------
-                      00045 
+                      00043 
 Warning[205]: Found directive in column 1. (ORG)
-                      00046 ORG 0x00              ; Set the program counter to address 0x00 (start of program)
+                      00044 ORG 0x00              ; Set the program counter to address 0x00 (start of program)
 Warning[203]: Found opcode in column 1. (NOP)
-0000   0000           00047 NOP                   ; No operation (dummy instruction)
-0001   2???           00048         GOTO INIT             ; Jump to the initialization code
-                      00049 
+0000   0000           00045 NOP                   ; No operation (dummy instruction)
+0001   2???           00046         GOTO INIT             ; Jump to the initialization code
+                      00047 
 Warning[205]: Found directive in column 1. (ORG)
-                      00050 ORG 0x04              ; Set the program counter to address 0x04 (interrupt service routine)
-0004   0000           00051         NOP
-                      00052 
-0005   1C8B           00053         BTFSS   INTCON, INTF    ; based on INTCON INTF Bit
-0006   2???           00054         GOTO    TIMER_INTERUPT
-0007   2???           00055         GOTO    BUTTON_INTERUPT
-                      00056 
-                      00057 
-0008                  00058 TIMER_INTERUPT:
-0008   1283 1303      00059         BANKSEL INTCON
-000A   138B           00060         BCF INTCON, GIE
-000B   1283 1303      00061         BANKSEL PORTA
+                      00048 ORG 0x04              ; Set the program counter to address 0x04 (interrupt service routine)
+0004   0000           00049         NOP
+                      00050 
+0005   1C8B           00051         BTFSS   INTCON, INTF    ; based on INTCON INTF Bit
+0006   2???           00052         GOTO    TIMER_INTERUPT
+0007   2???           00053         GOTO    BUTTON_INTERUPT
+                      00054 
+                      00055 
+0008                  00056 TIMER_INTERUPT:
+0008   1283 1303      00057         BANKSEL INTCON
+000A   138B           00058         BCF INTCON, GIE
+000B   1283 1303      00059         BANKSEL PORTA
 Message[305]: Using default destination of 1 (file).
-000D   0BBB           00062         DECFSZ  TIMER_INDEX
-000E   2???           00063         GOTO    SKIP
-000F                  00064 STATE_CHECKER:
-000F   182E           00065         BTFSC NEXT_STATE, 0             ; CHECK IF THE FIRST BIT IS 1
-0010   2???           00066         GOTO INCREMENT_DISPLAY
-0011   18AE           00067         BTFSC NEXT_STATE, 1
-0012   2???           00068         GOTO CHECK_IF_VISITED
-0013   192E           00069         BTFSC NEXT_STATE, 2
-0014   2???           00070         GOTO INCREMENT_DISPLAY
-0015   2???           00071         GOTO SKIP
-0016   0000           00072         NOP
-0017                  00073 CHECK_IF_VISITED:
-0017   183D           00074         BTFSC IS_VISITED, 0
-0018   2???           00075         GOTO change_state
-0019   143D           00076         BSF IS_VISITED, 0
-001A   2???           00077         GOTO SKIP
-001B                  00078 INCREMENT_DISPLAY:
+000D   0BBB           00060         DECFSZ  TIMER_INDEX
+000E   2???           00061         GOTO    SKIP
+000F                  00062 INCREMENT_DISPLAY:
 Message[305]: Using default destination of 1 (file).
-001B   0AB4           00079         INCF CURSOR
-001C   0834           00080         MOVF CURSOR, 0
-001D   3CC5           00081         SUBLW 0xC5
-001E   1903           00082         BTFSC STATUS, Z
-001F   2???           00083         goto change_state
-0020   0834           00084         MOVF CURSOR, 0
-0021   2???           00085         CALL SEND_LCD_COMMAND
-0022   3030           00086         MOVLW '0'
-0023   2???           00087         CALL SEND_LCD_DATA
-0024   0834           00088         MOVF CURSOR, 0
-0025   2???           00089         CALL SEND_LCD_COMMAND
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  3
+000F   0AB4           00063         INCF CURSOR
+0010   0834           00064         MOVF CURSOR, 0
+0011   3CCB           00065         SUBLW 0xCB
+0012   1903           00066         BTFSC STATUS, Z
+0013   2???           00067         GOTO DISPLAY_RESULT
+0014   0834           00068         MOVF CURSOR, 0
+0015   3CC5           00069         SUBLW 0xC5
+0016   1903           00070         BTFSC STATUS, Z
+0017   2???           00071         CALL SAVE_NUMBER_1
+0018   0834           00072         MOVF CURSOR, 0
+0019   2???           00073         CALL SEND_LCD_COMMAND
+001A   301E           00074         MOVLW D'30'
+001B   00BB           00075         MOVWF TIMER_INDEX
+001C                  00076 SKIP:
+001C   1283 1303      00077         BANKSEL TMR0
+001E   0181           00078         CLRF TMR0
+001F   1283 1303      00079         BANKSEL INTCON
+0021   110B           00080         BCF INTCON, T0IF ; Clear the TMR0 ov flag
+0022   178B           00081         BSF INTCON, GIE ; ENABLE GLOBAL INTERUPTS
+0023   1283 1303      00082         BANKSEL PORTA
+0025   0009           00083     RETFIE
+                      00084 
+0026                  00085 DISPLAY_RESULT:
+0026   2???           00086         CALL SAVE_NUMBER_2
+0027   082F           00087         MOVF OPERATION, 0
+0028   3C2B           00088         SUBLW '+'
+0029   1903           00089         BTFSC STATUS, Z
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0026   301E           00090         MOVLW D'30'
-0027   00BB           00091         MOVWF TIMER_INDEX
-0028                  00092 SKIP:
-0028   1283 1303      00093         BANKSEL TMR0
-002A   0181           00094         CLRF TMR0
-002B   1283 1303      00095         BANKSEL INTCON
-002D   110B           00096         BCF INTCON, T0IF ; Clear the TMR0 ov flag
-002E   178B           00097         BSF INTCON, GIE ; ENABLE GLOBAL INTERUPTS
-002F   1283 1303      00098         BANKSEL PORTA
-0031   0009           00099     RETFIE
-0032                  00100 change_state:
-0032   1003           00101         BCF STATUS, C
-0033   0DAE           00102         RLF NEXT_STATE, 1
-0034   082E           00103         MOVF NEXT_STATE, 0
-0035   18AE           00104         BTFSC NEXT_STATE, 1
-0036   2???           00105         CALL OPERATION_MENU
-0037   192E           00106         BTFSC NEXT_STATE, 2
-0038   2???           00107         goto SECOND_MENU
-0039   2???           00108         goto STATE_CHECKER
-                      00109 
-003A                  00110 BUTTON_INTERUPT:
-003A   2???           00111         CALL RESET_TIMER
-003B   1283 1303      00112         BANKSEL INTCON
-003D   108B           00113         BCF INTCON, INTF
-003E   120B           00114         BCF INTCON, INTE
-003F   182E           00115         BTFSC NEXT_STATE, 0
-0040   2???           00116         goto NUMBERS_IN
-0041   18AE           00117         BTFSC NEXT_STATE, 1
-0042   2???           00118         goto CHANGE_OPERATION
-0043   192E           00119         BTFSC NEXT_STATE, 2
-0044   2???           00120         goto NUMBERS_IN
-0045   2???           00121         goto INTERUPT_END
-0046                  00122 CHANGE_OPERATION:
-0046   082F           00123         MOVF OPERATION, 0
-0047   3C2B           00124         SUBLW '+'
-0048   1903           00125         BTFSC STATUS, Z
-0049   2???           00126         goto plus_digit
-004A   082F           00127         MOVF OPERATION, 0
-004B   3C2F           00128         SUBLW '/'
-004C   1903           00129         BTFSC STATUS, Z
-004D   2???           00130         goto div_digit
-004E   082F           00131         MOVF OPERATION, 0
-004F   3C25           00132         SUBLW '%'
-0050   1903           00133         BTFSC STATUS, Z
-0051   2???           00134         goto mod_digit
-0052                  00135 plus_digit:
-0052   302F           00136         MOVLW '/'
-0053   00AF           00137         MOVWF OPERATION
-0054   2???           00138         CALL SEND_LCD_DATA
-0055   0834           00139         MOVF CURSOR, 0
-0056   2???           00140         CALL SEND_LCD_COMMAND
-0057   2???           00141         goto INTERUPT_END
-0058                  00142 mod_digit:
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  4
+002A   2???           00090         GOTO ADDITION
+002B   082F           00091         MOVF OPERATION, 0
+002C   3C2F           00092         SUBLW '/'
+002D   1903           00093         BTFSC STATUS, Z
+002E   2???           00094         GOTO DIVISION
+002F   082F           00095         MOVF OPERATION, 0
+0030   3C25           00096         SUBLW '%'
+0031   1903           00097         BTFSC STATUS, Z
+0032   2???           00098         GOTO MODULO
+0033   2???           00099         GOTO SKIP
+0034                  00100 ADDITION:
+0034   1003           00101         BCF STATUS, C
+0035   1103           00102         BCF STATUS, Z
+0036   2???           00103         CALL ADD
+0037   2???           00104         CALL HexBCD
+0038   2???           00105         GOTO DISPLAY_RESULT_END
+0039                  00106 DIVISION:
+0039   1003           00107         BCF STATUS, C
+003A   1103           00108         BCF STATUS, Z
+003B   2???           00109         CALL DIVIDE
+003C   2???           00110         CALL HexBCD
+003D   2???           00111         GOTO DISPLAY_RESULT_END
+003E                  00112 MODULO:
+003E   1003           00113         BCF STATUS, C
+003F   1103           00114         BCF STATUS, Z
+0040   2???           00115         CALL MOD
+0041   2???           00116         CALL HexBCD
+0042   2???           00117         GOTO DISPLAY_RESULT_END
+0043                  00118 DISPLAY_RESULT_END:
+0043   3080           00119         MOVLW 0x80
+0044   00B4           00120         MOVWF CURSOR
+0045   2???           00121         CALL SEND_LCD_COMMAND
+0046   3001           00122         MOVLW 0x01
+0047   2???           00123         CALL SEND_LCD_COMMAND
+0048   3052           00124         MOVLW 'R'
+0049   2???           00125         CALL SEND_LCD_DATA
+004A   3045           00126         MOVLW 'E'
+004B   2???           00127         CALL SEND_LCD_DATA
+004C   3053           00128         MOVLW 'S'
+004D   2???           00129         CALL SEND_LCD_DATA
+004E   3055           00130         MOVLW 'U'
+004F   2???           00131         CALL SEND_LCD_DATA
+0050   304C           00132         MOVLW 'L'
+0051   2???           00133         CALL SEND_LCD_DATA
+0052   3054           00134         MOVLW 'T'
+0053   2???           00135         CALL SEND_LCD_DATA
+0054   30C0           00136         MOVLW 0xC0
+0055   2???           00137         CALL SEND_LCD_COMMAND
+0056   303D           00138         MOVLW '='
+0057   2???           00139         CALL SEND_LCD_DATA
+0058   0EB5           00140         SWAPF BCDvalH, 1
+0059   0835           00141         MOVF BCDvalH, 0
+005A   390F           00142         ANDLW 0x0F
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0058   302B           00143         MOVLW '+'
-0059   00AF           00144         MOVWF OPERATION
-005A   2???           00145         CALL SEND_LCD_DATA
-005B   0834           00146         MOVF CURSOR, 0
-005C   2???           00147         CALL SEND_LCD_COMMAND
-005D   2???           00148         goto INTERUPT_END
-005E                  00149 div_digit:
-005E   3025           00150         MOVLW '%'
-005F   00AF           00151         MOVWF OPERATION
-0060   2???           00152         CALL SEND_LCD_DATA
-0061   0834           00153         MOVF CURSOR, 0
-0062   2???           00154         CALL SEND_LCD_COMMAND
-0063   2???           00155         goto INTERUPT_END 
-                      00156         
-                      00157         
-0064                  00158 NUMBERS_IN:
-0064   0834           00159         MOVF CURSOR, 0
-0065   3CC0           00160         SUBLW 0xC0
-0066   1903           00161         BTFSC STATUS, Z
-0067   2???           00162         GOTO INC_C1
-0068   0834           00163         MOVF CURSOR, 0
-0069   3CC1           00164         SUBLW 0xC1
-006A   1903           00165         BTFSC STATUS, Z
-006B   2???           00166         GOTO INC_C2
-006C   0834           00167         MOVF CURSOR, 0
-006D   3CC2           00168         SUBLW 0xC2
-006E   1903           00169         BTFSC STATUS, Z
-006F   2???           00170         GOTO INC_C3
-0070   0834           00171         MOVF CURSOR, 0
-0071   3CC3           00172         SUBLW 0xC3
-0072   1903           00173         BTFSC STATUS, Z
-0073   2???           00174         GOTO INC_C4
-0074   0834           00175         MOVF CURSOR, 0
-0075   3CC4           00176         SUBLW 0xC4
-0076   1903           00177         BTFSC STATUS, Z
-0077   2???           00178         GOTO INC_C5
-0078                  00179 INC_C1:
-Message[305]: Using default destination of 1 (file).
-0078   0AA9           00180         INCF C1                         ; INCREMENT THE DIGIT
-0079   0829           00181         MOVF C1, 0                      ; LOAD IT TO W
-007A   3C37           00182         SUBLW '7'                       ; CHECK IF IT HAS EXCEEDED '7'
-007B   1903           00183         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-007C   2???           00184         CALL RESET_COUNTER_C1
-007D   0829           00185         MOVF C1, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-007E   2???           00186         call SEND_LCD_DATA      
-007F   0834           00187         MOVF CURSOR, 0  
-0080   2???           00188         call SEND_LCD_COMMAND
-0081   2???           00189         goto INTERUPT_END
-0082                  00190 INC_C2:
-0082   0829           00191         MOVF C1, 0
-0083   3C36           00192         SUBLW '6'               
-0084   1903           00193         BTFSC STATUS, Z ; CHECK IF C1 == 6
-0085   2???           00194         GOTO c2_to_five
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  5
+005B   3E30           00143         ADDLW '0'
+005C   2???           00144         CALL SEND_LCD_DATA
+005D   0EB5           00145         SWAPF BCDvalH, 1
+005E   0835           00146         MOVF BCDvalH, 0
+005F   390F           00147         ANDLW 0x0F
+0060   3E30           00148         ADDLW '0'
+0061   2???           00149         CALL SEND_LCD_DATA
+0062   0EB6           00150         SWAPF BCDvalM, 1
+0063   0836           00151         MOVF BCDvalM, 0
+0064   390F           00152         ANDLW 0x0F
+0065   3E30           00153         ADDLW '0'
+0066   2???           00154         CALL SEND_LCD_DATA
+0067   0EB6           00155         SWAPF BCDvalM, 1
+0068   0836           00156         MOVF BCDvalM, 0
+0069   390F           00157         ANDLW 0x0F
+006A   3E30           00158         ADDLW '0'
+006B   2???           00159         CALL SEND_LCD_DATA
+006C   0EB7           00160         SWAPF BCDvalL, 1
+006D   0837           00161         MOVF BCDvalL, 0
+006E   390F           00162         ANDLW 0x0F
+006F   3E30           00163         ADDLW '0'
+0070   2???           00164         CALL SEND_LCD_DATA
+0071   0EB7           00165         SWAPF BCDvalL, 1
+0072   0837           00166         MOVF BCDvalL, 0
+0073   390F           00167         ANDLW 0x0F
+0074   3E30           00168         ADDLW '0'
+0075   2???           00169         CALL SEND_LCD_DATA
+0076   2???           00170         GOTO SKIP
+                      00171         
+0077                  00172 BUTTON_INTERUPT:
+0077   2???           00173         CALL RESET_TIMER
+0078   1283 1303      00174         BANKSEL INTCON
+007A   108B           00175         BCF INTCON, INTF
+007B   120B           00176         BCF INTCON, INTE
+007C   0834           00177         MOVF CURSOR, 0
+007D   3CC5           00178         SUBLW 0xC5
+007E   1903           00179         BTFSC STATUS, Z
+007F   2???           00180         GOTO CHANGE_OPERATION
+0080   2???           00181         GOTO NUMBERS_IN
+                      00182 
+0081                  00183 SAVE_NUMBER_1:
+0081   3030           00184         MOVLW '0'
+0082   02A9           00185         SUBWF C1, 1
+0083   3030           00186         MOVLW '0'
+0084   02AA           00187         SUBWF C2, 1
+0085   3030           00188         MOVLW '0'
+0086   02AB           00189         SUBWF C3, 1
+0087   3030           00190         MOVLW '0'
+0088   02AC           00191         SUBWF C4, 1
+0089   3030           00192         MOVLW '0'
+008A   02AD           00193         SUBWF C5, 1
+008B   2???           00194         CALL dec2bin16
+008C   083E           00195         MOVF NUMHI, 0
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0086                  00195 c2_to_nine:
-Message[305]: Using default destination of 1 (file).
-0086   0AAA           00196         INCF C2                         ; INCREMENT THE DIGIT
-0087   082A           00197         MOVF C2, 0                      ; LOAD IT TO W
-0088   3C3A           00198         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
-0089   1903           00199         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-008A   2???           00200         CALL RESET_COUNTER_C2
-008B   082A           00201         MOVF C2, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-008C   2???           00202         call SEND_LCD_DATA      
-008D   0834           00203         MOVF CURSOR, 0  
-008E   2???           00204         call SEND_LCD_COMMAND
-008F   2???           00205         goto INTERUPT_END
-0090                  00206 c2_to_five:
-Message[305]: Using default destination of 1 (file).
-0090   0AAA           00207         INCF C2                         ; INCREMENT THE DIGIT
-0091   082A           00208         MOVF C2, 0                      ; LOAD IT TO W
-0092   3C36           00209         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '5'
-0093   1903           00210         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-0094   2???           00211         CALL RESET_COUNTER_C2
-0095   082A           00212         MOVF C2, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-0096   2???           00213         call SEND_LCD_DATA      
-0097   0834           00214         MOVF CURSOR, 0  
-0098   2???           00215         call SEND_LCD_COMMAND
-0099   2???           00216         goto INTERUPT_END       
-009A                  00217 INC_C3:
-009A   082A           00218         MOVF C2, 0
-009B   3C35           00219         SUBLW '5'               ; Check if the last digit is 5
-009C   1903           00220         BTFSC STATUS, Z
-009D   2???           00221         goto check_c1_c3
-009E                  00222 c3_to_nine:
-Message[305]: Using default destination of 1 (file).
-009E   0AAB           00223         INCF C3                         ; INCREMENT THE DIGIT
-009F   082B           00224         MOVF C3, 0                      ; LOAD IT TO W
-00A0   3C3A           00225         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
-00A1   1903           00226         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-00A2   2???           00227         CALL RESET_COUNTER_C3
-00A3   082B           00228         MOVF C3, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00A4   2???           00229         call SEND_LCD_DATA      
-00A5   0834           00230         MOVF CURSOR, 0  
-00A6   2???           00231         call SEND_LCD_COMMAND
-00A7   2???           00232         goto INTERUPT_END
-00A8                  00233 c3_to_five:
-Message[305]: Using default destination of 1 (file).
-00A8   0AAB           00234         INCF C3                         ; INCREMENT THE DIGIT
-00A9   082B           00235         MOVF C3, 0                      ; LOAD IT TO W
-00AA   3C36           00236         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '9'
-00AB   1903           00237         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-00AC   2???           00238         CALL RESET_COUNTER_C3
-00AD   082B           00239         MOVF C3, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00AE   2???           00240         call SEND_LCD_DATA      
-00AF   0834           00241         MOVF CURSOR, 0  
-00B0   2???           00242         call SEND_LCD_COMMAND
-00B1   2???           00243         goto INTERUPT_END
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  6
+008D   00A1           00196         MOVWF R1_MSB
+008E   083F           00197         MOVF NUMLO, 0
+008F   00A0           00198         MOVWF R1_LSB
+0090   3030           00199         MOVLW '0'
+0091   00A9           00200         MOVWF C1
+0092   00AA           00201         MOVWF C2
+0093   00AB           00202         MOVWF C3
+0094   00AC           00203         MOVWF C4
+0095   00AD           00204         MOVWF C5
+0096   0008           00205         RETURN
+0097                  00206 SAVE_NUMBER_2:
+0097   3030           00207         MOVLW '0'
+0098   02A9           00208         SUBWF C1, 1
+0099   3030           00209         MOVLW '0'
+009A   02AA           00210         SUBWF C2, 1
+009B   3030           00211         MOVLW '0'
+009C   02AB           00212         SUBWF C3, 1
+009D   3030           00213         MOVLW '0'
+009E   02AC           00214         SUBWF C4, 1
+009F   3030           00215         MOVLW '0'
+00A0   02AD           00216         SUBWF C5, 1
+                      00217 
+00A1   2???           00218         CALL dec2bin16
+00A2   083E           00219         MOVF NUMHI, 0
+00A3   00A3           00220         MOVWF R2_MSB
+00A4   083F           00221         MOVF NUMLO, 0
+00A5   00A2           00222         MOVWF R2_LSB
+00A6   3030           00223         MOVLW '0'
+00A7   00A9           00224         MOVWF C1
+00A8   00AA           00225         MOVWF C2
+00A9   00AB           00226         MOVWF C3
+00AA   00AC           00227         MOVWF C4
+00AB   00AD           00228         MOVWF C5
+00AC   0008           00229         RETURN
+00AD                  00230 CHANGE_OPERATION:
+00AD   082F           00231         MOVF OPERATION, 0
+00AE   3C2B           00232         SUBLW '+'
+00AF   1903           00233         BTFSC STATUS, Z
+00B0   2???           00234         goto plus_digit
+00B1   082F           00235         MOVF OPERATION, 0
+00B2   3C2F           00236         SUBLW '/'
+00B3   1903           00237         BTFSC STATUS, Z
+00B4   2???           00238         goto div_digit
+00B5   082F           00239         MOVF OPERATION, 0
+00B6   3C25           00240         SUBLW '%'
+00B7   1903           00241         BTFSC STATUS, Z
+00B8   2???           00242         goto mod_digit
+00B9                  00243 plus_digit:
+00B9   302F           00244         MOVLW '/'
+00BA   00AF           00245         MOVWF OPERATION
+00BB   2???           00246         CALL SEND_LCD_DATA
+00BC   0834           00247         MOVF CURSOR, 0
+00BD   2???           00248         CALL SEND_LCD_COMMAND
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00244         
-00B2                  00245 INC_C4:
-00B2   082B           00246         MOVF C3, 0
-00B3   3C35           00247         SUBLW '5'
-00B4   1903           00248         BTFSC STATUS, Z
-00B5   2???           00249         goto check_c2_c4
-00B6                  00250 c4_to_nine:
-Message[305]: Using default destination of 1 (file).
-00B6   0AAC           00251         INCF C4                 ; INCREMENT THE DIGIT
-00B7   082C           00252         MOVF C4, 0                      ; LOAD IT TO W
-00B8   3C3A           00253         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
-00B9   1903           00254         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-00BA   2???           00255         CALL RESET_COUNTER_C4
-00BB   082C           00256         MOVF C4, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00BC   2???           00257         call SEND_LCD_DATA      
-00BD   0834           00258         MOVF CURSOR, 0  
-00BE   2???           00259         call SEND_LCD_COMMAND
-00BF   2???           00260         goto INTERUPT_END
-00C0                  00261 c4_to_three:
-Message[305]: Using default destination of 1 (file).
-00C0   0AAC           00262         INCF C4                 ; INCREMENT THE DIGIT
-00C1   082C           00263         MOVF C4, 0                      ; LOAD IT TO W
-00C2   3C34           00264         SUBLW '4'                       ; CHECK IF IT HAS EXCEEDED '9'
-00C3   1903           00265         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-00C4   2???           00266         CALL RESET_COUNTER_C4
-00C5   082C           00267         MOVF C4, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00C6   2???           00268         call SEND_LCD_DATA      
-00C7   0834           00269         MOVF CURSOR, 0  
-00C8   2???           00270         call SEND_LCD_COMMAND
-00C9   2???           00271         goto INTERUPT_END
-00CA                  00272 INC_C5:
-00CA   082C           00273         MOVF C4, 0
-00CB   3C33           00274         SUBLW '3'
-00CC   1903           00275         BTFSC STATUS, Z
-00CD   2???           00276         goto check_c3_c5
-00CE                  00277 c5_to_nine:
-Message[305]: Using default destination of 1 (file).
-00CE   0AAD           00278         INCF C5                         ; INCREMENT THE DIGIT
-00CF   082D           00279         MOVF C5, 0                      ; LOAD IT TO W
-00D0   3C3A           00280         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
-00D1   1903           00281         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-00D2   2???           00282         CALL RESET_COUNTER_C5
-00D3   082D           00283         MOVF C5, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00D4   2???           00284         call SEND_LCD_DATA      
-00D5   0834           00285         MOVF CURSOR, 0  
-00D6   2???           00286         call SEND_LCD_COMMAND
-00D7   2???           00287         goto INTERUPT_END
-00D8                  00288 c5_to_five:
-Message[305]: Using default destination of 1 (file).
-00D8   0AAD           00289         INCF C5                         ; INCREMENT THE DIGIT
-00D9   082D           00290         MOVF C5, 0                      ; LOAD IT TO W
-00DA   3C36           00291         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '9'
-00DB   1903           00292         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  7
+00BE   2???           00249         goto INTERUPT_END
+00BF                  00250 mod_digit:
+00BF   302B           00251         MOVLW '+'
+00C0   00AF           00252         MOVWF OPERATION
+00C1   2???           00253         CALL SEND_LCD_DATA
+00C2   0834           00254         MOVF CURSOR, 0
+00C3   2???           00255         CALL SEND_LCD_COMMAND
+00C4   2???           00256         goto INTERUPT_END
+00C5                  00257 div_digit:
+00C5   3025           00258         MOVLW '%'
+00C6   00AF           00259         MOVWF OPERATION
+00C7   2???           00260         CALL SEND_LCD_DATA
+00C8   0834           00261         MOVF CURSOR, 0
+00C9   2???           00262         CALL SEND_LCD_COMMAND
+00CA   2???           00263         goto INTERUPT_END 
+                      00264         
+                      00265         
+00CB                  00266 NUMBERS_IN:
+00CB   0834           00267         MOVF CURSOR, 0
+00CC   3CC5           00268         SUBLW 0xC5
+00CD   1C03           00269         BTFSS STATUS, 0 
+00CE   2???           00270         GOTO NUMBERS_IN_2
+00CF   0834           00271         MOVF CURSOR, 0
+00D0   3CC0           00272         SUBLW 0xC0
+00D1   1903           00273         BTFSC STATUS, Z
+00D2   2???           00274         GOTO INC_C1
+00D3   0834           00275         MOVF CURSOR, 0
+00D4   3CC1           00276         SUBLW 0xC1
+00D5   1903           00277         BTFSC STATUS, Z
+00D6   2???           00278         GOTO INC_C2
+00D7   0834           00279         MOVF CURSOR, 0
+00D8   3CC2           00280         SUBLW 0xC2
+00D9   1903           00281         BTFSC STATUS, Z
+00DA   2???           00282         GOTO INC_C3
+00DB   0834           00283         MOVF CURSOR, 0
+00DC   3CC3           00284         SUBLW 0xC3
+00DD   1903           00285         BTFSC STATUS, Z
+00DE   2???           00286         GOTO INC_C4
+00DF   0834           00287         MOVF CURSOR, 0
+00E0   3CC4           00288         SUBLW 0xC4
+00E1   1903           00289         BTFSC STATUS, Z
+00E2   2???           00290         GOTO INC_C5
+00E3                  00291 NUMBERS_IN_2:
+00E3   0834           00292         MOVF CURSOR, 0
+00E4   3CC6           00293         SUBLW 0xC6
+00E5   1903           00294         BTFSC STATUS, Z
+00E6   2???           00295         GOTO INC_C1
+00E7   0834           00296         MOVF CURSOR, 0
+00E8   3CC7           00297         SUBLW 0xC7
+00E9   1903           00298         BTFSC STATUS, Z
+00EA   2???           00299         GOTO INC_C2
+00EB   0834           00300         MOVF CURSOR, 0
+00EC   3CC8           00301         SUBLW 0xC8
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00DC   2???           00293         CALL RESET_COUNTER_C5
-00DD   082D           00294         MOVF C5, 0                      ; MOVE THE NEW COUNTER VALUE TO W
-00DE   2???           00295         call SEND_LCD_DATA      
-00DF   0834           00296         MOVF CURSOR, 0  
-00E0   2???           00297         call SEND_LCD_COMMAND
-00E1   2???           00298         goto INTERUPT_END
-                      00299 
-00E2                  00300 INTERUPT_END:
-00E2   1283 1303      00301         BANKSEL INTCON
-00E4   108B           00302         BCF INTCON, INTF
-00E5   100C           00303         BCF     PIR1,TMR1IF     ; clear the TMR1 ov flag 
-00E6   160B           00304         BSF INTCON, INTE        
-00E7   1283 1303      00305         BANKSEL PORTA
-00E9   0009           00306         RETFIE
-                      00307 
-00EA                  00308 RESET_COUNTER_C1:
-00EA   3030           00309         MOVLW '0'
-00EB   00A9           00310         MOVWF C1
-00EC   0008           00311         RETURN
-00ED                  00312 RESET_COUNTER_C2:
-00ED   3030           00313         MOVLW '0'
-00EE   00AA           00314         MOVWF C2
-00EF   0008           00315         RETURN
-00F0                  00316 RESET_COUNTER_C3:
-00F0   3030           00317         MOVLW '0'
-00F1   00AB           00318         MOVWF C3
-00F2   0008           00319         RETURN
-00F3                  00320 RESET_COUNTER_C4:
-00F3   3030           00321         MOVLW '0'
-00F4   00AC           00322         MOVWF C4
-00F5   0008           00323         RETURN
-00F6                  00324 RESET_COUNTER_C5:
-00F6   3030           00325         MOVLW '0'
-00F7   00AD           00326         MOVWF C5
-00F8   0008           00327         RETURN
-                      00328 ; ==========================================================================
-                      00329 ;                                               END INTERUPTS
-                      00330 ;                                                                                         
-                      00331 ; ===========================================================================
-00F9                  00332 INIT:
-00F9   3030           00333         MOVLW '0'
-00FA   00A9           00334         MOVWF C1
-00FB   00AA           00335         MOVWF C2
-00FC   00AB           00336         MOVWF C3
-00FD   00AC           00337         MOVWF C4
-00FE   00AD           00338         MOVWF C5
-00FF   302B           00339         MOVLW '+'                               ; SET THE OPERATION TO ADDITION
-0100   00AF           00340         MOVWF OPERATION
-0101   30C0           00341         MOVLW 0xC0
-0102   01AE           00342         CLRF NEXT_STATE
-0103   142E           00343         BSF NEXT_STATE, 0
-0104   00B4           00344         MOVWF CURSOR
-0105   301E           00345         MOVLW D'30'
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  8
+00ED   1903           00302         BTFSC STATUS, Z
+00EE   2???           00303         GOTO INC_C3
+00EF   0834           00304         MOVF CURSOR, 0
+00F0   3CC9           00305         SUBLW 0xC9
+00F1   1903           00306         BTFSC STATUS, Z
+00F2   2???           00307         GOTO INC_C4
+00F3   0834           00308         MOVF CURSOR, 0
+00F4   3CCA           00309         SUBLW 0xCA
+00F5   1903           00310         BTFSC STATUS, Z
+00F6   2???           00311         GOTO INC_C5
+00F7                  00312 INC_C1:
+Message[305]: Using default destination of 1 (file).
+00F7   0AA9           00313         INCF C1                         ; INCREMENT THE DIGIT
+00F8   0829           00314         MOVF C1, 0                      ; LOAD IT TO W
+00F9   3C37           00315         SUBLW '7'                       ; CHECK IF IT HAS EXCEEDED '7'
+00FA   1903           00316         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+00FB   2???           00317         CALL RESET_COUNTER_C1
+00FC   0829           00318         MOVF C1, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+00FD   2???           00319         call SEND_LCD_DATA      
+00FE   0834           00320         MOVF CURSOR, 0  
+00FF   2???           00321         call SEND_LCD_COMMAND
+0100   2???           00322         goto INTERUPT_END
+0101                  00323 INC_C2:
+0101   0829           00324         MOVF C1, 0
+0102   3C36           00325         SUBLW '6'               
+0103   1903           00326         BTFSC STATUS, Z ; CHECK IF C1 == 6
+0104   2???           00327         GOTO c2_to_five
+0105                  00328 c2_to_nine:
+Message[305]: Using default destination of 1 (file).
+0105   0AAA           00329         INCF C2                         ; INCREMENT THE DIGIT
+0106   082A           00330         MOVF C2, 0                      ; LOAD IT TO W
+0107   3C3A           00331         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
+0108   1903           00332         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0109   2???           00333         CALL RESET_COUNTER_C2
+010A   082A           00334         MOVF C2, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+010B   2???           00335         call SEND_LCD_DATA      
+010C   0834           00336         MOVF CURSOR, 0  
+010D   2???           00337         call SEND_LCD_COMMAND
+010E   2???           00338         goto INTERUPT_END
+010F                  00339 c2_to_five:
+Message[305]: Using default destination of 1 (file).
+010F   0AAA           00340         INCF C2                         ; INCREMENT THE DIGIT
+0110   082A           00341         MOVF C2, 0                      ; LOAD IT TO W
+0111   3C36           00342         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '5'
+0112   1903           00343         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0113   2???           00344         CALL RESET_COUNTER_C2
+0114   082A           00345         MOVF C2, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+0115   2???           00346         call SEND_LCD_DATA      
+0116   0834           00347         MOVF CURSOR, 0  
+0117   2???           00348         call SEND_LCD_COMMAND
+0118   2???           00349         goto INTERUPT_END       
+0119                  00350 INC_C3:
+0119   082A           00351         MOVF C2, 0
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0106   00BB           00346         MOVWF TIMER_INDEX
-0107   2???           00347         CALL INTERUPT_INIT
-0108   2???           00348         CALL PORTS_INIT
-0109   2???           00349         CALL INIT_DISPLAY
-010A   2???           00350         CALL INTITIAL_MESSAGE
-010B                  00351 START: 
-010B   00B9           00352         MOVWF NumbHi
-010C   00BA           00353         MOVWF NumbLo
-010D   2???           00354         CALL HexBCD
-010E   2???           00355         GOTO loop
-                      00356 
-                      00357 ; ==========================================================================
-                      00358 ;                                               INTERUPTS & PORTS
-                      00359 ;                                                                                         
-                      00360 ; ===========================================================================
-010F                  00361 INTERUPT_INIT: 
-010F   1283 1303      00362         BANKSEL INTCON
-0111   178B           00363         BSF INTCON, GIE                 ; ENABLE GLOBAL INTERUPTS
-0112   160B           00364         BSF INTCON, INTE                ; ENABLE RB0 INTERUPT BIT
-0113   168B           00365         BSF INTCON, T0IE        ; Enable Timer0 Interrupts
-0114   1683 1303      00366         BANKSEL OPTION_REG
-0116   3007           00367         MOVLW 07h
+011A   3C35           00352         SUBLW '5'               ; Check if the last digit is 5
+011B   1903           00353         BTFSC STATUS, Z
+011C   2???           00354         goto check_c1_c3
+011D                  00355 c3_to_nine:
+Message[305]: Using default destination of 1 (file).
+011D   0AAB           00356         INCF C3                         ; INCREMENT THE DIGIT
+011E   082B           00357         MOVF C3, 0                      ; LOAD IT TO W
+011F   3C3A           00358         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
+0120   1903           00359         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0121   2???           00360         CALL RESET_COUNTER_C3
+0122   082B           00361         MOVF C3, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+0123   2???           00362         call SEND_LCD_DATA      
+0124   0834           00363         MOVF CURSOR, 0  
+0125   2???           00364         call SEND_LCD_COMMAND
+0126   2???           00365         goto INTERUPT_END
+0127                  00366 c3_to_five:
+Message[305]: Using default destination of 1 (file).
+0127   0AAB           00367         INCF C3                         ; INCREMENT THE DIGIT
+0128   082B           00368         MOVF C3, 0                      ; LOAD IT TO W
+0129   3C36           00369         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '9'
+012A   1903           00370         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+012B   2???           00371         CALL RESET_COUNTER_C3
+012C   082B           00372         MOVF C3, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+012D   2???           00373         call SEND_LCD_DATA      
+012E   0834           00374         MOVF CURSOR, 0  
+012F   2???           00375         call SEND_LCD_COMMAND
+0130   2???           00376         goto INTERUPT_END
+                      00377         
+0131                  00378 INC_C4:
+0131   082B           00379         MOVF C3, 0
+0132   3C35           00380         SUBLW '5'
+0133   1903           00381         BTFSC STATUS, Z
+0134   2???           00382         goto check_c2_c4
+0135                  00383 c4_to_nine:
+Message[305]: Using default destination of 1 (file).
+0135   0AAC           00384         INCF C4                 ; INCREMENT THE DIGIT
+0136   082C           00385         MOVF C4, 0                      ; LOAD IT TO W
+0137   3C3A           00386         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
+0138   1903           00387         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0139   2???           00388         CALL RESET_COUNTER_C4
+013A   082C           00389         MOVF C4, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+013B   2???           00390         call SEND_LCD_DATA      
+013C   0834           00391         MOVF CURSOR, 0  
+013D   2???           00392         call SEND_LCD_COMMAND
+013E   2???           00393         goto INTERUPT_END
+013F                  00394 c4_to_three:
+Message[305]: Using default destination of 1 (file).
+013F   0AAC           00395         INCF C4                 ; INCREMENT THE DIGIT
+0140   082C           00396         MOVF C4, 0                      ; LOAD IT TO W
+0141   3C34           00397         SUBLW '4'                       ; CHECK IF IT HAS EXCEEDED '9'
+0142   1903           00398         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0143   2???           00399         CALL RESET_COUNTER_C4
+0144   082C           00400         MOVF C4, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0145   2???           00401         call SEND_LCD_DATA      
+0146   0834           00402         MOVF CURSOR, 0  
+0147   2???           00403         call SEND_LCD_COMMAND
+0148   2???           00404         goto INTERUPT_END
+0149                  00405 INC_C5:
+0149   082C           00406         MOVF C4, 0
+014A   3C33           00407         SUBLW '3'
+014B   1903           00408         BTFSC STATUS, Z
+014C   2???           00409         goto check_c3_c5
+014D                  00410 c5_to_nine:
+Message[305]: Using default destination of 1 (file).
+014D   0AAD           00411         INCF C5                         ; INCREMENT THE DIGIT
+014E   082D           00412         MOVF C5, 0                      ; LOAD IT TO W
+014F   3C3A           00413         SUBLW 0x3A                      ; CHECK IF IT HAS EXCEEDED '9'
+0150   1903           00414         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+0151   2???           00415         CALL RESET_COUNTER_C5
+0152   082D           00416         MOVF C5, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+0153   2???           00417         call SEND_LCD_DATA      
+0154   0834           00418         MOVF CURSOR, 0  
+0155   2???           00419         call SEND_LCD_COMMAND
+0156   2???           00420         goto INTERUPT_END
+0157                  00421 c5_to_five:
+Message[305]: Using default destination of 1 (file).
+0157   0AAD           00422         INCF C5                         ; INCREMENT THE DIGIT
+0158   082D           00423         MOVF C5, 0                      ; LOAD IT TO W
+0159   3C36           00424         SUBLW '6'                       ; CHECK IF IT HAS EXCEEDED '9'
+015A   1903           00425         BTFSC STATUS, Z         ; IF IT HAS RESET THE COUNTER
+015B   2???           00426         CALL RESET_COUNTER_C5
+015C   082D           00427         MOVF C5, 0                      ; MOVE THE NEW COUNTER VALUE TO W
+015D   2???           00428         call SEND_LCD_DATA      
+015E   0834           00429         MOVF CURSOR, 0  
+015F   2???           00430         call SEND_LCD_COMMAND
+0160   2???           00431         goto INTERUPT_END
+                      00432 
+0161                  00433 INTERUPT_END:
+0161   1283 1303      00434         BANKSEL INTCON
+0163   108B           00435         BCF INTCON, INTF
+0164   100C           00436         BCF     PIR1,TMR1IF     ; clear the TMR1 ov flag 
+0165   160B           00437         BSF INTCON, INTE        
+0166   1283 1303      00438         BANKSEL PORTA
+0168   0009           00439         RETFIE
+                      00440 
+0169                  00441 RESET_COUNTER_C1:
+0169   3030           00442         MOVLW '0'
+016A   00A9           00443         MOVWF C1
+016B   0008           00444         RETURN
+016C                  00445 RESET_COUNTER_C2:
+016C   3030           00446         MOVLW '0'
+016D   00AA           00447         MOVWF C2
+016E   0008           00448         RETURN
+016F                  00449 RESET_COUNTER_C3:
+016F   3030           00450         MOVLW '0'
+0170   00AB           00451         MOVWF C3
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0171   0008           00452         RETURN
+0172                  00453 RESET_COUNTER_C4:
+0172   3030           00454         MOVLW '0'
+0173   00AC           00455         MOVWF C4
+0174   0008           00456         RETURN
+0175                  00457 RESET_COUNTER_C5:
+0175   3030           00458         MOVLW '0'
+0176   00AD           00459         MOVWF C5
+0177   0008           00460         RETURN
+                      00461 ; ==========================================================================
+                      00462 ;                                               END INTERUPTS
+                      00463 ;                                                                                         
+                      00464 ; ===========================================================================
+0178                  00465 INIT:
+0178   01A6           00466         CLRF RESULT_LSB
+0179   01A7           00467         CLRF RESULT_MSB
+017A   01A0           00468         CLRF R1_LSB
+017B   01A2           00469         CLRF R2_LSB
+017C   01A1           00470         CLRF R1_MSB
+017D   01A3           00471         CLRF R2_MSB
+017E   01A4           00472         CLRF TEMP_LSB
+017F   01A5           00473         CLRF TEMP_MSB
+0180   3030           00474         MOVLW '0'
+0181   00A9           00475         MOVWF C1
+0182   00AA           00476         MOVWF C2
+0183   00AB           00477         MOVWF C3
+0184   00AC           00478         MOVWF C4
+0185   00AD           00479         MOVWF C5
+0186   302B           00480         MOVLW '+'                               ; SET THE OPERATION TO ADDITION
+0187   00AF           00481         MOVWF OPERATION
+0188   30C0           00482         MOVLW 0xC0
+0189   01AE           00483         CLRF NEXT_STATE
+018A   142E           00484         BSF NEXT_STATE, 0
+018B   00B4           00485         MOVWF CURSOR
+018C   301E           00486         MOVLW D'30'
+018D   00BB           00487         MOVWF TIMER_INDEX
+018E   2???           00488         CALL INTERUPT_INIT
+018F   2???           00489         CALL PORTS_INIT
+0190   2???           00490         CALL INIT_DISPLAY
+0191   2???           00491         CALL INTITIAL_MESSAGE
+0192                  00492 START: 
+0192   2???           00493         GOTO loop
+                      00494 
+                      00495 ; ==========================================================================
+                      00496 ;                                               INTERUPTS & PORTS
+                      00497 ;                                                                                         
+                      00498 ; ===========================================================================
+0193                  00499 INTERUPT_INIT: 
+0193   1283 1303      00500         BANKSEL INTCON
+0195   178B           00501         BSF INTCON, GIE                 ; ENABLE GLOBAL INTERUPTS
+0196   160B           00502         BSF INTCON, INTE                ; ENABLE RB0 INTERUPT BIT
+0197   168B           00503         BSF INTCON, T0IE        ; Enable Timer0 Interrupts
+0198   1683 1303      00504         BANKSEL OPTION_REG
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+019A   3007           00505         MOVLW 07h
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0117   0081           00368         MOVWF OPTION_REG ;Prescaler set to maximum
-0118   110B           00369         BCF INTCON, T0IF ; Clear the TMR0 ov flag
-0119   1283 1303      00370         BANKSEL PORTA
-011B   0008           00371         RETURN
-011C                  00372 PORTS_INIT:
-                      00373         ; Convert PORTA into a digital 
-011C   1683 1303      00374         BANKSEL TRISA
+019B   0081           00506         MOVWF OPTION_REG ;Prescaler set to maximum
+019C   110B           00507         BCF INTCON, T0IF ; Clear the TMR0 ov flag
+019D   1283 1303      00508         BANKSEL PORTA
+019F   0008           00509         RETURN
+01A0                  00510 PORTS_INIT:
+                      00511         ; Convert PORTA into a digital 
+01A0   1683 1303      00512         BANKSEL TRISA
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-011E   0185           00375         CLRF TRISA      ; SET ALL PINS AS OUTPUT
-011F   1283 1303      00376         BANKSEL PORTA
-0121   0185           00377         CLRF PORTA
-0122   1683 1303      00378         BANKSEL ADCON1
-0124   3006           00379         MOVLW 0x06
+01A2   0185           00513         CLRF TRISA      ; SET ALL PINS AS OUTPUT
+01A3   1283 1303      00514         BANKSEL PORTA
+01A5   0185           00515         CLRF PORTA
+01A6   1683 1303      00516         BANKSEL ADCON1
+01A8   3006           00517         MOVLW 0x06
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0125   009F           00380         MOVWF ADCON1
-                      00381         ; SET PORTB PIN0 AS AN INPUT
-0126   1683 1303      00382         BANKSEL TRISB
+01A9   009F           00518         MOVWF ADCON1
+                      00519         ; SET PORTB PIN0 AS AN INPUT
+01AA   1683 1303      00520         BANKSEL TRISB
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0128   0186           00383         CLRF TRISB
+01AC   0186           00521         CLRF TRISB
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0129   1406           00384         BSF TRISB, 0
-012A   1283 1303      00385         BANKSEL PORTA
-012C   0008           00386         RETURN
-012D                  00387 RESET_TIMER:
-012D   1283 1303      00388         BANKSEL PORTA
-012F   301E           00389         MOVLW D'30'
-0130   00BB           00390         MOVWF TIMER_INDEX
-0131   150B           00391         BSF INTCON, T0IF ; Clear the TMR0 ov flag
-0132   0008           00392         RETURN
-                      00393 ; ==========================================================================
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE  9
+01AD   1406           00522         BSF TRISB, 0
+01AE   1283 1303      00523         BANKSEL PORTA
+01B0   0008           00524         RETURN
+01B1                  00525 RESET_TIMER:
+01B1   1283 1303      00526         BANKSEL PORTA
+01B3   301E           00527         MOVLW D'30'
+01B4   00BB           00528         MOVWF TIMER_INDEX
+01B5   150B           00529         BSF INTCON, T0IF ; Clear the TMR0 ov flag
+01B6   0008           00530         RETURN
+                      00531 ; ==========================================================================
+                      00532 ;                                               DISPLAY AND DELAYS
+                      00533 ;                                                                                         
+                      00534 ; ===========================================================================
+01B7                  00535 xms:
+01B7   00F1           00536         MOVWF   TimerX                  ; Count for X ms
+01B8                  00537 loopX:  
+01B8   2???           00538         CALL    onems                   ; Delay 1ms
+Message[305]: Using default destination of 1 (file).
+01B9   0BF1           00539         DECFSZ  TimerX                  ; Repeat X times 
+01BA   2???           00540         GOTO    loopX                   ; until Z
+01BB   0008           00541         RETURN                                  ; and finish
+01BC                  00542 onems:  
+01BC   30F9           00543         MOVLW   D'249'                  ; Count for 1ms delay 
+01BD   00F0           00544         MOVWF   Timer1                  ; Load count
+01BE                  00545 loop1:
+01BE   0000           00546         NOP                                             ; Pad for 4 cycle loop
+Message[305]: Using default destination of 1 (file).
+01BF   0BF0           00547         DECFSZ  Timer1                  ; Count
+01C0   2???           00548         GOTO    loop1                   ; until Z
+01C1   0008           00549         RETURN                          ; and finish
+01C2                  00550 INIT_DISPLAY:
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 12
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00394 ;                                               DISPLAY AND DELAYS
-                      00395 ;                                                                                         
-                      00396 ; ===========================================================================
-0133                  00397 xms:
-0133   00F1           00398         MOVWF   TimerX                  ; Count for X ms
-0134                  00399 loopX:  
-0134   2???           00400         CALL    onems                   ; Delay 1ms
+01C2   3064           00551         MOVLW D'100'
+01C3   2???           00552         CALL xms
+01C4   3003           00553         MOVLW 0x03
+01C5   0085           00554         MOVWF PORTA ; SEND 0x03 
+01C6   2???           00555         CALL ENABLE_PULSE
+01C7   2???           00556         call onems
+01C8   2???           00557         call onems
+01C9   2???           00558         call onems
+01CA   2???           00559         call onems
+01CB   2???           00560         call onems
+01CC   2???           00561         CALL ENABLE_PULSE
+01CD   2???           00562         call onems
+01CE   2???           00563         CALL ENABLE_PULSE
+01CF   1005           00564         BCF PORTA, 0
+01D0   2???           00565         CALL ENABLE_PULSE
+01D1   3002           00566         MOVLW   0x2             ; Set 4-bit mode, 2 lines 0x28
+01D2   0085           00567         MOVWF PORTA
+01D3   2???           00568         call ENABLE_PULSE
+01D4   2???           00569         call onems
+01D5   3008           00570         MOVLW 0x8
+01D6   0185           00571         CLRF PORTA
+01D7   0085           00572         MOVWF PORTA
+01D8   2???           00573         call ENABLE_PULSE
+01D9   2???           00574         call onems
+01DA   0185           00575         CLRF PORTA
+01DB   2???           00576         call ENABLE_PULSE
+01DC   2???           00577         call onems
+01DD   300E           00578         MOVLW 0xE       ; ENABLE BLINKING
+01DE   0085           00579         MOVWF PORTA
+01DF   2???           00580         call ENABLE_PULSE
+01E0   2???           00581         call onems
+01E1   0008           00582         RETURN          
+                      00583 
+01E2                  00584 ENABLE_PULSE:
+01E2   1685           00585         BSF PORTA, E
+01E3   2???           00586         call onems
+01E4   2???           00587         call onems
+01E5   2???           00588         call onems
+01E6   2???           00589         call onems
+01E7   2???           00590         call onems
+01E8   1285           00591         BCF PORTA, E
+01E9   2???           00592         call onems
+01EA   2???           00593         call onems
+01EB   2???           00594         call onems
+01EC   2???           00595         call onems
+01ED   2???           00596         call onems
+01EE   0008           00597         RETURN
+                      00598 
+01EF                  00599 SEND_LCD_DATA:
+01EF   00A8           00600         MOVWF TEMP_W            ; SAVE A COPY OF W
 Message[305]: Using default destination of 1 (file).
-0135   0BF1           00401         DECFSZ  TimerX                  ; Repeat X times 
-0136   2???           00402         GOTO    loopX                   ; until Z
-0137   0008           00403         RETURN                                  ; and finish
-0138                  00404 onems:  
-0138   30F9           00405         MOVLW   D'249'                  ; Count for 1ms delay 
-0139   00F0           00406         MOVWF   Timer1                  ; Load count
-013A                  00407 loop1:
-013A   0000           00408         NOP                                             ; Pad for 4 cycle loop
-Message[305]: Using default destination of 1 (file).
-013B   0BF0           00409         DECFSZ  Timer1                  ; Count
-013C   2???           00410         GOTO    loop1                   ; until Z
-013D   0008           00411         RETURN                          ; and finish
-013E                  00412 INIT_DISPLAY:
-013E   3064           00413         MOVLW D'100'
-013F   2???           00414         CALL xms
-0140   3003           00415         MOVLW 0x03
-0141   0085           00416         MOVWF PORTA ; SEND 0x03 
-0142   2???           00417         CALL ENABLE_PULSE
-0143   2???           00418         call onems
-0144   2???           00419         call onems
-0145   2???           00420         call onems
-0146   2???           00421         call onems
-0147   2???           00422         call onems
-0148   2???           00423         CALL ENABLE_PULSE
-0149   2???           00424         call onems
-014A   2???           00425         CALL ENABLE_PULSE
-014B   1005           00426         BCF PORTA, 0
-014C   2???           00427         CALL ENABLE_PULSE
-014D   3002           00428         MOVLW   0x2             ; Set 4-bit mode, 2 lines 0x28
-014E   0085           00429         MOVWF PORTA
-014F   2???           00430         call ENABLE_PULSE
-0150   2???           00431         call onems
-0151   3008           00432         MOVLW 0x8
-0152   0185           00433         CLRF PORTA
-0153   0085           00434         MOVWF PORTA
-0154   2???           00435         call ENABLE_PULSE
-0155   2???           00436         call onems
-0156   0185           00437         CLRF PORTA
-0157   2???           00438         call ENABLE_PULSE
-0158   2???           00439         call onems
-0159   300E           00440         MOVLW 0xE       ; ENABLE BLINKING
-015A   0085           00441         MOVWF PORTA
-015B   2???           00442         call ENABLE_PULSE
-015C   2???           00443         call onems
-015D   0008           00444         RETURN          
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 10
+01F0   0EA8           00601         SWAPF  TEMP_W           ; SWAP THE HIGHER NIBBLE WITH THE LOWER
+01F1   0828           00602         MOVF TEMP_W, 0          ; RELOAD THE SWAPPED NIBBLES TO W
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 13
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00445 
-015E                  00446 ENABLE_PULSE:
-015E   1685           00447         BSF PORTA, E
-015F   2???           00448         call onems
-0160   2???           00449         call onems
-0161   2???           00450         call onems
-0162   2???           00451         call onems
-0163   2???           00452         call onems
-0164   1285           00453         BCF PORTA, E
-0165   2???           00454         call onems
-0166   2???           00455         call onems
-0167   2???           00456         call onems
-0168   2???           00457         call onems
-0169   2???           00458         call onems
-016A   0008           00459         RETURN
-                      00460 
-016B                  00461 SEND_LCD_DATA:
-016B   00A8           00462         MOVWF TEMP_W            ; SAVE A COPY OF W
+01F2   390F           00603         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE" (LOWER ORIGINALY)
+01F3   0085           00604         MOVWF PORTA                     ; STORE THE "LOWER NIBBLE" (HIGHER ORIGINALY) IN PORTA
+01F4   1605           00605         BSF PORTA, RS           ; SELECT DATA REGISTER
+01F5   2???           00606         call ENABLE_PULSE       ; SEND PULSE
+01F6   2???           00607         call onems
 Message[305]: Using default destination of 1 (file).
-016C   0EA8           00463         SWAPF  TEMP_W           ; SWAP THE HIGHER NIBBLE WITH THE LOWER
-016D   0828           00464         MOVF TEMP_W, 0          ; RELOAD THE SWAPPED NIBBLES TO W
-016E   390F           00465         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE" (LOWER ORIGINALY)
-016F   0085           00466         MOVWF PORTA                     ; STORE THE "LOWER NIBBLE" (HIGHER ORIGINALY) IN PORTA
-0170   1605           00467         BSF PORTA, RS           ; SELECT DATA REGISTER
-0171   2???           00468         call ENABLE_PULSE       ; SEND PULSE
-0172   2???           00469         call onems
+01F7   0EA8           00608         SWAPF TEMP_W            ; RESWAP THE NIBBLES
+01F8   0828           00609         MOVF TEMP_W, 0          ; STORE IT BACK IN W
+01F9   390F           00610         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE"
+01FA   0085           00611         MOVWF PORTA                     ; STORE THE LOWER NIBBLE IN W
+01FB   1605           00612         BSF PORTA, RS           ; SELECT DATA REGISTER
+01FC   2???           00613         call ENABLE_PULSE       ; SEND PULSE
+01FD   2???           00614         call onems
+01FE   0008           00615         RETURN
+                      00616 
+01FF                  00617 SEND_LCD_COMMAND:
+01FF   00A8           00618         MOVWF TEMP_W            ; SAVE A COPY OF W
 Message[305]: Using default destination of 1 (file).
-0173   0EA8           00470         SWAPF TEMP_W            ; RESWAP THE NIBBLES
-0174   0828           00471         MOVF TEMP_W, 0          ; STORE IT BACK IN W
-0175   390F           00472         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE"
-0176   0085           00473         MOVWF PORTA                     ; STORE THE LOWER NIBBLE IN W
-0177   1605           00474         BSF PORTA, RS           ; SELECT DATA REGISTER
-0178   2???           00475         call ENABLE_PULSE       ; SEND PULSE
-0179   2???           00476         call onems
-017A   0008           00477         RETURN
-                      00478 
-017B                  00479 SEND_LCD_COMMAND:
-017B   00A8           00480         MOVWF TEMP_W            ; SAVE A COPY OF W
+0200   0EA8           00619         SWAPF  TEMP_W           ; SWAP THE HIGHER NIBBLE WITH THE LOWER
+0201   0828           00620         MOVF TEMP_W, 0          ; RELOAD THE SWAPPED NIBBLES TO W
+0202   390F           00621         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE" (LOWER ORIGINALY)
+0203   0085           00622         MOVWF PORTA                     ; STORE THE "LOWER NIBBLE" (HIGHER ORIGINALY) IN PORTA
+0204   1205           00623         BCF PORTA, RS           ; SELECT COMMAND REGISTER
+0205   2???           00624         call ENABLE_PULSE       ; SEND PULSE
+0206   2???           00625         call onems
 Message[305]: Using default destination of 1 (file).
-017C   0EA8           00481         SWAPF  TEMP_W           ; SWAP THE HIGHER NIBBLE WITH THE LOWER
-017D   0828           00482         MOVF TEMP_W, 0          ; RELOAD THE SWAPPED NIBBLES TO W
-017E   390F           00483         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE" (LOWER ORIGINALY)
-017F   0085           00484         MOVWF PORTA                     ; STORE THE "LOWER NIBBLE" (HIGHER ORIGINALY) IN PORTA
-0180   1205           00485         BCF PORTA, RS           ; SELECT COMMAND REGISTER
-0181   2???           00486         call ENABLE_PULSE       ; SEND PULSE
-0182   2???           00487         call onems
-Message[305]: Using default destination of 1 (file).
-0183   0EA8           00488         SWAPF TEMP_W            ; RESWAP THE NIBBLES
-0184   0828           00489         MOVF TEMP_W, 0          ; STORE IT BACK IN W
-0185   390F           00490         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE"
-0186   0085           00491         MOVWF PORTA                     ; STORE THE LOWER NIBBLE IN W
-0187   1205           00492         BCF PORTA, RS           ; SELECT COMMAND REGISTER
-0188   2???           00493         call ENABLE_PULSE       ; SEND PULSE
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 11
+0207   0EA8           00626         SWAPF TEMP_W            ; RESWAP THE NIBBLES
+0208   0828           00627         MOVF TEMP_W, 0          ; STORE IT BACK IN W
+0209   390F           00628         ANDLW 0x0F                      ; GET RID OF THE "HIGHER NIBBLE"
+020A   0085           00629         MOVWF PORTA                     ; STORE THE LOWER NIBBLE IN W
+020B   1205           00630         BCF PORTA, RS           ; SELECT COMMAND REGISTER
+020C   2???           00631         call ENABLE_PULSE       ; SEND PULSE
+020D   2???           00632         call onems
+020E   0008           00633         RETURN
+                      00634 
+020F                  00635 INTITIAL_MESSAGE:
+020F   3001           00636         MOVLW 0x01
+0210   2???           00637         CALL SEND_LCD_COMMAND
+0211   3080           00638         MOVLW 0x80
+0212   2???           00639         CALL SEND_LCD_COMMAND
+0213   3045           00640         MOVLW 'E'
+0214   2???           00641         CALL SEND_LCD_DATA
+0215   304E           00642         MOVLW 'N'
+0216   2???           00643         CALL SEND_LCD_DATA
+0217   3054           00644         MOVLW 'T'
+0218   2???           00645         CALL SEND_LCD_DATA
+0219   3045           00646         MOVLW 'E'
+021A   2???           00647         CALL SEND_LCD_DATA
+021B   3052           00648         MOVLW 'R'
+021C   2???           00649         CALL SEND_LCD_DATA
+021D   3020           00650         MOVLW ' '
+021E   2???           00651         CALL SEND_LCD_DATA
+021F   304F           00652         MOVLW 'O'
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 14
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0189   2???           00494         call onems
-018A   0008           00495         RETURN
-                      00496 
-018B                  00497 INTITIAL_MESSAGE:
-018B   3001           00498         MOVLW 0x01
-018C   2???           00499         CALL SEND_LCD_COMMAND
-018D   3080           00500         MOVLW 0x80
-018E   2???           00501         CALL SEND_LCD_COMMAND
-018F   3045           00502         MOVLW 'E'
-0190   2???           00503         CALL SEND_LCD_DATA
-0191   304E           00504         MOVLW 'N'
-0192   2???           00505         CALL SEND_LCD_DATA
-0193   3054           00506         MOVLW 'T'
-0194   2???           00507         CALL SEND_LCD_DATA
-0195   3045           00508         MOVLW 'E'
-0196   2???           00509         CALL SEND_LCD_DATA
-0197   3052           00510         MOVLW 'R'
-0198   2???           00511         CALL SEND_LCD_DATA
-0199   3020           00512         MOVLW ' '
-019A   2???           00513         CALL SEND_LCD_DATA
-019B   304E           00514         MOVLW 'N'
-019C   2???           00515         CALL SEND_LCD_DATA
-019D   3055           00516         MOVLW 'U'
-019E   2???           00517         CALL SEND_LCD_DATA
-019F   304D           00518         MOVLW 'M'
-01A0   2???           00519         CALL SEND_LCD_DATA
-01A1   3031           00520         MOVLW '1'
-01A2   2???           00521         CALL SEND_LCD_DATA
-01A3   303A           00522         MOVLW ':'
-01A4   2???           00523         CALL SEND_LCD_DATA
-01A5   30C0           00524         MOVLW 0xC0
-01A6   00B4           00525         MOVWF CURSOR
-01A7   2???           00526         CALL SEND_LCD_COMMAND
-01A8   3030           00527         MOVLW '0'
-01A9   2???           00528         CALL SEND_LCD_DATA
-01AA   0834           00529         MOVF CURSOR, 0
-01AB   2???           00530         CALL SEND_LCD_COMMAND
-01AC   0008           00531         RETURN
-01AD                  00532 SECOND_MENU:
-01AD   3001           00533         MOVLW 0x01
-01AE   2???           00534         CALL SEND_LCD_COMMAND
-01AF   3080           00535         MOVLW 0x80
-01B0   2???           00536         CALL SEND_LCD_COMMAND
-01B1   3045           00537         MOVLW 'E'
-01B2   2???           00538         CALL SEND_LCD_DATA
-01B3   304E           00539         MOVLW 'N'
-01B4   2???           00540         CALL SEND_LCD_DATA
-01B5   3054           00541         MOVLW 'T'
-01B6   2???           00542         CALL SEND_LCD_DATA
-01B7   3045           00543         MOVLW 'E'
-01B8   2???           00544         CALL SEND_LCD_DATA
-01B9   3052           00545         MOVLW 'R'
-01BA   2???           00546         CALL SEND_LCD_DATA
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 12
+0220   2???           00653         CALL SEND_LCD_DATA
+0221   3050           00654         MOVLW 'P'
+0222   2???           00655         CALL SEND_LCD_DATA
+0223   3045           00656         MOVLW 'E'
+0224   2???           00657         CALL SEND_LCD_DATA
+0225   3052           00658         MOVLW 'R'
+0226   2???           00659         CALL SEND_LCD_DATA
+0227   3041           00660         MOVLW 'A'
+0228   2???           00661         CALL SEND_LCD_DATA
+0229   3054           00662         MOVLW 'T'
+022A   2???           00663         CALL SEND_LCD_DATA
+022B   3049           00664         MOVLW 'I'
+022C   2???           00665         CALL SEND_LCD_DATA
+022D   304F           00666         MOVLW 'O'
+022E   2???           00667         CALL SEND_LCD_DATA
+022F   304E           00668         MOVLW 'N'
+0230   2???           00669         CALL SEND_LCD_DATA
+0231   303A           00670         MOVLW ':'
+0232   2???           00671         CALL SEND_LCD_DATA
+0233   30C0           00672         MOVLW 0xC0
+0234   00B4           00673         MOVWF CURSOR
+0235   2???           00674         CALL SEND_LCD_COMMAND
+0236   3030           00675         MOVLW '0'
+0237   2???           00676         CALL SEND_LCD_DATA
+0238   3030           00677         MOVLW '0'
+0239   2???           00678         CALL SEND_LCD_DATA
+023A   3030           00679         MOVLW '0'
+023B   2???           00680         CALL SEND_LCD_DATA
+023C   3030           00681         MOVLW '0'
+023D   2???           00682         CALL SEND_LCD_DATA
+023E   3030           00683         MOVLW '0'
+023F   2???           00684         CALL SEND_LCD_DATA
+0240   302B           00685         MOVLW '+'
+0241   2???           00686         CALL SEND_LCD_DATA
+0242   3030           00687         MOVLW '0'
+0243   2???           00688         CALL SEND_LCD_DATA
+0244   3030           00689         MOVLW '0'
+0245   2???           00690         CALL SEND_LCD_DATA
+0246   3030           00691         MOVLW '0'
+0247   2???           00692         CALL SEND_LCD_DATA
+0248   3030           00693         MOVLW '0'
+0249   2???           00694         CALL SEND_LCD_DATA
+024A   3030           00695         MOVLW '0'
+024B   2???           00696         CALL SEND_LCD_DATA
+024C   0834           00697         MOVF CURSOR, 0
+024D   2???           00698         CALL SEND_LCD_COMMAND
+024E   0008           00699         RETURN
+                      00700 ; ==========================================================================
+                      00701 ;                                                       NUMBERS & CONVERSIONS
+                      00702 ;                                                                                         
+                      00703 ; ===========================================================================
+024F                  00704 HexBCD: 
+024F   3010           00705         movlw d'16'
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 15
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-01BB   3020           00547         MOVLW ' '
-01BC   2???           00548         CALL SEND_LCD_DATA
-01BD   304E           00549         MOVLW 'N'
-01BE   2???           00550         CALL SEND_LCD_DATA
-01BF   3055           00551         MOVLW 'U'
-01C0   2???           00552         CALL SEND_LCD_DATA
-01C1   304D           00553         MOVLW 'M'
-01C2   2???           00554         CALL SEND_LCD_DATA
-01C3   3032           00555         MOVLW '2'
-01C4   2???           00556         CALL SEND_LCD_DATA
-01C5   303A           00557         MOVLW ':'
-01C6   2???           00558         CALL SEND_LCD_DATA
-01C7   30C0           00559         MOVLW 0xC0
-01C8   00B4           00560         MOVWF CURSOR
-01C9   2???           00561         CALL SEND_LCD_COMMAND
-01CA   3030           00562         MOVLW '0'
-01CB   2???           00563         CALL SEND_LCD_DATA
-01CC   0834           00564         MOVF CURSOR, 0
-01CD   2???           00565         CALL SEND_LCD_COMMAND
-01CE   2???           00566         goto SKIP
-01CF                  00567 OPERATION_MENU:
-01CF   3001           00568         MOVLW 0x01
-01D0   2???           00569         CALL SEND_LCD_COMMAND
-01D1   3080           00570         MOVLW 0x80
-01D2   2???           00571         CALL SEND_LCD_COMMAND
-01D3   3045           00572         MOVLW 'E'
-01D4   2???           00573         CALL SEND_LCD_DATA
-01D5   304E           00574         MOVLW 'N'
-01D6   2???           00575         CALL SEND_LCD_DATA
-01D7   3054           00576         MOVLW 'T'
-01D8   2???           00577         CALL SEND_LCD_DATA
-01D9   3045           00578         MOVLW 'E'
-01DA   2???           00579         CALL SEND_LCD_DATA
-01DB   3052           00580         MOVLW 'R'
-01DC   2???           00581         CALL SEND_LCD_DATA
-01DD   3020           00582         MOVLW ' '
-01DE   2???           00583         CALL SEND_LCD_DATA
-01DF   304F           00584         MOVLW 'O'
-01E0   2???           00585         CALL SEND_LCD_DATA
-01E1   3050           00586         MOVLW 'P'
-01E2   2???           00587         CALL SEND_LCD_DATA
-01E3   3045           00588         MOVLW 'E'
-01E4   2???           00589         CALL SEND_LCD_DATA
-01E5   3052           00590         MOVLW 'R'
-01E6   2???           00591         CALL SEND_LCD_DATA
-01E7   3041           00592         MOVLW 'A'
-01E8   2???           00593         CALL SEND_LCD_DATA
-01E9   3054           00594         MOVLW 'T'
-01EA   2???           00595         CALL SEND_LCD_DATA
-01EB   3049           00596         MOVLW 'I'
-01EC   2???           00597         CALL SEND_LCD_DATA
-01ED   304F           00598         MOVLW 'O'
-01EE   2???           00599         CALL SEND_LCD_DATA
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 13
+0250   00B8           00706         movwf MCount
+0251   01B5           00707         clrf BCDvalH
+0252   01B6           00708         clrf BCDvalM
+0253   01B7           00709         clrf BCDvalL
+0254   1003           00710         bcf STATUS,C
+                      00711 
+0255                  00712 loop16:  
+0255   0DA6           00713         rlf RESULT_LSB,F
+0256   0DA7           00714         rlf RESULT_MSB,F
+0257   0DB7           00715         rlf BCDvalL,F
+0258   0DB6           00716         rlf BCDvalM,F
+0259   0DB5           00717         rlf BCDvalH,F
+                      00718 
+025A   03B8           00719         decf MCount,F
+025B   1903           00720         btfsc STATUS,Z
+025C   0008           00721         return
+                      00722 
+025D                  00723 adjDEC:   
+025D   3037           00724         movlw BCDvalL
+025E   0084           00725         movwf FSR
+025F   2???           00726         call adjBCD
+0260   3036           00727         movlw BCDvalM
+0261   0084           00728         movwf FSR
+0262   2???           00729         call adjBCD
+0263   3035           00730         movlw BCDvalH
+0264   0084           00731         movwf FSR
+0265   2???           00732         call adjBCD
+0266   2???           00733         goto loop16
+                      00734 
+0267                  00735 adjBCD 
+0267   3003           00736         movlw d'3'
+0268   0700           00737         addwf INDF,W
+0269   00BC           00738         movwf Temp
+026A   19BC           00739         btfsc Temp,3
+026B   0080           00740         movwf INDF
+026C   3030           00741         movlw 30h
+026D   0700           00742         addwf INDF,W
+026E   00BC           00743         movwf Temp
+026F   1BBC           00744         btfsc Temp,7
+0270   0080           00745         movwf INDF
+0271   0008           00746         RETURN
+                      00747 
+0272                  00748 dec2bin16
+0272   082C           00749     movf  C4,W        ; (C4 + C2) * 2
+0273   072A           00750     addwf C2,W
+0274   00BF           00751     movwf NUMLO
+0275   0DBF           00752     rlf   NUMLO,F
+                      00753 
+0276   0E2B           00754     swapf C3,W        ; + C3 * 16 + C3
+0277   072B           00755     addwf C3,W
+0278   07BF           00756     addwf NUMLO,F
+                      00757 
+0279   0D29           00758     rlf   C1,W        ; + (C1 * 2 + C2) * 256
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 16
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-01EF   304E           00600         MOVLW 'N'
-01F0   2???           00601         CALL SEND_LCD_DATA
-01F1   30C0           00602         MOVLW 0xC0
-01F2   00B4           00603         MOVWF CURSOR
-01F3   2???           00604         CALL SEND_LCD_COMMAND
-01F4   082F           00605         MOVF OPERATION, w
-01F5   2???           00606         CALL SEND_LCD_DATA
-01F6   0834           00607         MOVF CURSOR, 0
-01F7   2???           00608         CALL SEND_LCD_COMMAND
-01F8   2???           00609         GOTO SKIP
-                      00610 ; ==========================================================================
-                      00611 ;                                                       NUMBERS & CONVERSIONS
-                      00612 ;                                                                                         
-                      00613 ; ===========================================================================
-01F9                  00614 HexBCD: 
-01F9   3010           00615         movlw d'16'
-01FA   00B8           00616         movwf MCount
-01FB   01B5           00617         clrf BCDvalH
-01FC   01B6           00618         clrf BCDvalM
-01FD   01B7           00619         clrf BCDvalL
-01FE   1003           00620         bcf STATUS,C
-                      00621 
-01FF                  00622 loop16:  
-01FF   0DBA           00623         rlf NumbLo,F
-0200   0DB9           00624         rlf NumbHi,F
-0201   0DB7           00625         rlf BCDvalL,F
-0202   0DB6           00626         rlf BCDvalM,F
-0203   0DB5           00627         rlf BCDvalH,F
-                      00628 
-0204   03B8           00629         decf MCount,F
-0205   1903           00630         btfsc STATUS,Z
-0206   0008           00631         return
-                      00632 
-0207                  00633 adjDEC:   
-0207   3037           00634         movlw BCDvalL
-0208   0084           00635         movwf FSR
-0209   2???           00636         call adjBCD
-020A   3036           00637         movlw BCDvalM
-020B   0084           00638         movwf FSR
-020C   2???           00639         call adjBCD
-020D   3035           00640         movlw BCDvalH
-020E   0084           00641         movwf FSR
-020F   2???           00642         call adjBCD
-0210   2???           00643         goto loop16
-                      00644 
-0211                  00645 adjBCD 
-0211   3003           00646         movlw d'3'
-0212   0700           00647         addwf INDF,W
-0213   00BC           00648         movwf Temp
-0214   19BC           00649         btfsc Temp,3
-0215   0080           00650         movwf INDF
-0216   3030           00651         movlw 30h
-0217   0700           00652         addwf INDF,W
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 14
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0218   00BC           00653         movwf Temp
-0219   1BBC           00654         btfsc Temp,7
-021A   0080           00655         movwf INDF
-021B   0008           00656         return
-021C                  00657 dec2bin16:
-021C   082A           00658         movf C2, w
-021D   072C           00659         addwf C4, w
-021E   00BE           00660         movwf lo
-021F   07BE           00661         addwf lo, f
-0220   0D2D           00662         rlf C5, w
-0221   00BF           00663         movwf hi
-                      00664 
-0222   0E2B           00665         swapf C3, w
-0223   072B           00666         addwf C3, w
-0224   07BE           00667         addwf lo, f
-0225   082C           00668         movf C4, w
-0226   07BF           00669         addwf hi, f
-0227   0DBE           00670         rlf lo, f
-0228   0DBF           00671         rlf hi, f
-                      00672 
-0229   0E2B           00673         swapf C3, w
-022A   072A           00674         addwf C2, w
-022B   07BE           00675         addwf lo, f
-022C   0E2C           00676         swapf C4, w
-022D   1803           00677         BTFSC STATUS, C
-022E   3801           00678          iorlw 0x01
-022F   07BF           00679         addwf hi, f
-0230   0E2C           00680         swapf C4, w
-0231   02BE           00681         subwf lo, f
-0232   1C03           00682         btfss STATUS,C
-0233   03BF           00683          decf hi, f
-0234   1003           00684         clrc
-0235   0DBE           00685         rlf lo, f
-0236   0DBF           00686         rlf hi, f
-                      00687 
-0237   0E2D           00688         swapf C5, w
-0238   0729           00689         addwf C1, w
-0239   07BE           00690         addwf lo, f
-023A   082D           00691         movf C5, w
-023B   1803           00692         BTFSC STATUS, C
-023C   032D           00693          decf C5, w
-023D   02BF           00694         subwf hi, f
-023E   0008           00695         return
-                      00696 ; ==========================================================================
-                      00697 ;                                               ARETHMETIC OPERATIONS 
-                      00698 ;                                                                                         
-                      00699 ; ===========================================================================
-023F                  00700 ADD:
-023F   01A6           00701         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
-0240   01A7           00702         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
-0241   0820           00703         MOVF R1_LSB, 0        ; Move the value in R1_LSB to W register
-0242   0722           00704         ADDWF R2_LSB, 0       ; Add the value in W to R2_LSB (result in R2_LSB with no carry)
-0243   1803           00705         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 15
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-Message[305]: Using default destination of 1 (file).
-0244   0AA7           00706         INCF RESULT_MSB       ; If carry, increment the result's Most Significant Byte
-0245   00A6           00707         MOVWF RESULT_LSB      ; Move the result of addition to the result's Least Significant Byte
-0246   0821           00708         MOVF R1_MSB, 0        ; Move the value in R1_MSB to W register
-0247   0723           00709         ADDWF R2_MSB, 0       ; Add the value in W to R2_MSB (result in R2_MSB with carry)
-Message[305]: Using default destination of 1 (file).
-0248   07A7           00710         ADDWF RESULT_MSB      ; Add the result of addition to the result's Most Significant Byte
-0249   0008           00711         RETURN               ; Return from the subroutine
-                      00712 
-024A                  00713 SUB:
-024A   0922           00714         COMF R2_LSB, 0        ; Compute the two's complement of R2_LSB
-024B   0724           00715         ADDWF TEMP_LSB, 0     ; Add 1 to get the two's complement
-024C   1803           00716         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
-Message[305]: Using default destination of 1 (file).
-024D   0AA5           00717         INCF TEMP_MSB         ; If there was a carry, increment TEMP_MSB
-024E   3E01           00718         ADDLW 0x01            ; Add 1 to W register
-024F   1803           00719         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
-Message[305]: Using default destination of 1 (file).
-0250   0AA5           00720         INCF TEMP_MSB         ; If there was a carry, increment TEMP_MSB
-0251   00A4           00721         MOVWF TEMP_LSB        ; Move the result of two's complement to TEMP_LSB
-0252   0923           00722         COMF R2_MSB, 0        ; Compute the two's complement of R2_MSB
-0253   0725           00723         ADDWF TEMP_MSB, 0     ; Add 1 to get the two's complement
-0254   00A5           00724         MOVWF TEMP_MSB        ; Move the result of two's complement to TEMP_MSB
-0255   0008           00725         RETURN                ; Return from the subroutine
-                      00726 
-0256                  00727 DIVIDE:
-0256   01A7           00728         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
-0257   01A6           00729         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
-0258   0820           00730         MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
-0259   00A4           00731         MOVWF TEMP_LSB
-025A   0821           00732         MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
-025B   00A5           00733         MOVWF TEMP_MSB
-025C                  00734 DIVLOOP:
-025C   2???           00735         CALL SUB              ; Call the SUB subroutine to perform subtraction
-025D   1C03           00736         BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
-025E   2???           00737         GOTO DIVEND           ; If no borrow, exit the loop (division complete)
-Message[305]: Using default destination of 1 (file).
-025F   0AA6           00738         INCF RESULT_LSB       ; Increment the result's Least Significant Byte
-0260   1903           00739         BTFSC STATUS, 2       ; Check if the register is overflown
-Message[305]: Using default destination of 1 (file).
-0261   0AA7           00740         INCF RESULT_MSB       ; If it is, increment the result's Most Significant Byte
-0262   2???           00741         GOTO DIVLOOP          ; Continue the division loop
-0263                  00742 DIVEND:
-0263   0008           00743         RETURN                ; Return from the DIVIDE subroutine
-0264                  00744 MOD:
-0264   01A7           00745         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte (initialize to 0)
-0265   01A6           00746         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte (initialize to 0)
-0266   0820           00747         MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
-0267   00A4           00748         MOVWF TEMP_LSB
-0268   0821           00749         MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
-0269   00A5           00750         MOVWF TEMP_MSB
-026A                  00751 MODLOOP:
-026A   2???           00752         CALL SUB              ; Call the SUB subroutine to perform subtraction
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 16
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-026B   1C03           00753         BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
-026C   2???           00754         GOTO MODEND           ; If no borrow, exit the loop (modulo operation complete)
-026D   2???           00755         GOTO MODLOOP          ; Continue the modulo loop
-                      00756 
-026E                  00757 MODEND:
-026E   0822           00758         MOVF R2_LSB, 0        ; Move the value in R2_LSB to W register
-026F   0724           00759         ADDWF TEMP_LSB, 0     ; Add the value in W to TEMP_LSB (carry ignored as it's not needed)
-0270   1803           00760         BTFSC STATUS, 0       ; Check if there was a carry from the addition
-Message[305]: Using default destination of 1 (file).
-0271   0AA7           00761         INCF RESULT_MSB       ; If carry, increment the result's Most Significant Byte
-0272   00A6           00762         MOVWF RESULT_LSB      ; Move the result of the addition to the result's Least Significant Byte
-                      00763 
-0273   0823           00764         MOVF R2_MSB, 0        ; Move the value in R2_MSB to W register
-0274   0725           00765         ADDWF TEMP_MSB, 0     ; Add the value in W to TEMP_MSB (carry ignored as it's not needed)
-Message[305]: Using default destination of 1 (file).
-0275   07A7           00766         ADDWF RESULT_MSB      ; Add the result of the addition to the result's Most Significant Byte
-                      00767 
-0276   0008           00768         RETURN                  ; Return from the MOD subroutine              
+027A   072A           00759     addwf C2,W
+027B   00BE           00760     movwf NUMHI
+                      00761 
+027C   0DBF           00762     rlf   NUMLO,F     ; * 2
+027D   0DBE           00763     rlf   NUMHI,F
+                      00764 
+027E   0E2A           00765     swapf C2,W        ; - C2 * 16
+027F   02BF           00766     subwf NUMLO,F
+0280   1C03           00767     skpc
+0281   03BE           00768     decf  NUMHI,F
                       00769 
-                      00770 ; ==========================================================================
-                      00771 ;                                               INCREMENTS
-                      00772 ;                                                                                         
-                      00773 ; ===========================================================================
-0277                  00774 check_c1_c3:
-0277   0829           00775         MOVF C1, 0
-0278   3C36           00776         SUBLW '6'
-0279   1903           00777         BTFSC STATUS, Z
-027A   2???           00778         goto c3_to_five
-027B   2???           00779         goto c3_to_nine
-027C                  00780 check_c2_c4:
-027C   082A           00781         MOVF C2, 0
-027D   3C35           00782         SUBLW '5'
-027E   1903           00783         BTFSC STATUS, Z
-027F   2???           00784         goto check_c1_c4
-0280   2???           00785         goto c4_to_nine
-0281                  00786 check_c1_c4:
-0281   0829           00787         MOVF C1, 0
-0282   3C36           00788         SUBLW '6'
-0283   1903           00789         BTFSC STATUS, Z
-0284   2???           00790         goto c4_to_three
-0285   2???           00791         goto c4_to_nine
-0286                  00792 check_c3_c5:
-0286   082B           00793         MOVF C3, 0
-0287   3C35           00794         SUBLW '5'
-0288   1903           00795         BTFSC STATUS, Z
-0289   2???           00796         goto check_c2_c5
-028A   2???           00797         goto c5_to_nine
-028B                  00798 check_c2_c5:
-028B   082A           00799         MOVF C2, 0
-028C   3C35           00800         SUBLW '5'
-028D   1903           00801         BTFSC STATUS, Z
-028E   2???           00802         goto check_c1_c5
-028F   2???           00803         goto c5_to_nine
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 17
+0282   0E2B           00770     swapf C3,W        ; + C3 * 16 + C4
+0283   072C           00771     addwf C4,W
+0284   07BF           00772     addwf NUMLO,F
+0285   1803           00773     skpnc
+0286   0ABE           00774     incf  NUMHI,F
+                      00775 
+0287   0E29           00776     swapf C1,W        ; + C1 * 16 + C5
+0288   072D           00777     addwf C5,W
+                      00778 
+0289   0DBF           00779     rlf   NUMLO,F     ; * 2
+028A   0DBE           00780     rlf   NUMHI,F
+                      00781 
+028B   07BF           00782     addwf NUMLO,F
+028C   1803           00783     skpnc
+028D   0ABE           00784     incf  NUMHI,F
+                      00785 
+028E   0829           00786     movf  C1,W        ; - C1 * 256
+028F   02BE           00787     subwf NUMHI,F
+                      00788 
+0290   0E29           00789     swapf C1,W        ; + C1 * 16 * 256 * 2
+0291   07BE           00790     addwf NUMHI,F
+0292   07BE           00791     addwf NUMHI,F
+                      00792 
+0293   0008           00793     return            ; Q.E.D.
+                      00794 ; ==========================================================================
+                      00795 ;                                               ARETHMETIC OPERATIONS 
+                      00796 ;                                                                                         
+                      00797 ; ===========================================================================
+0294                  00798 ADD:
+0294   01A6           00799         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
+0295   01A7           00800         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
+0296   0820           00801         MOVF R1_LSB, 0        ; Move the value in R1_LSB to W register
+0297   0722           00802         ADDWF R2_LSB, 0       ; Add the value in W to R2_LSB (result in R2_LSB with no carry)
+0298   1803           00803         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
+Message[305]: Using default destination of 1 (file).
+0299   0AA7           00804         INCF RESULT_MSB       ; If carry, increment the result's Most Significant Byte
+029A   00A6           00805         MOVWF RESULT_LSB      ; Move the result of addition to the result's Least Significant Byte
+029B   0821           00806         MOVF R1_MSB, 0        ; Move the value in R1_MSB to W register
+029C   0723           00807         ADDWF R2_MSB, 0       ; Add the value in W to R2_MSB (result in R2_MSB with carry)
+Message[305]: Using default destination of 1 (file).
+029D   07A7           00808         ADDWF RESULT_MSB      ; Add the result of addition to the result's Most Significant Byte
+029E   0008           00809         RETURN               ; Return from the subroutine
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 17
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0290                  00804 check_c1_c5:
-0290   0829           00805         MOVF C1, 0
-0291   3C36           00806         SUBLW '6'
-0292   1903           00807         BTFSC STATUS, Z
-0293   2???           00808         goto c5_to_five
-0294   2???           00809         goto c5_to_nine
                       00810 
-0295                  00811 loop:
-0295   2???           00812         GOTO loop
-3731                  00813         END                  ; End of the progra
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 18
+029F                  00811 SUB:
+029F   0922           00812         COMF R2_LSB, 0        ; Compute the two's complement of R2_LSB
+02A0   0724           00813         ADDWF TEMP_LSB, 0     ; Add 1 to get the two's complement
+02A1   1803           00814         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
+Message[305]: Using default destination of 1 (file).
+02A2   0AA5           00815         INCF TEMP_MSB         ; If there was a carry, increment TEMP_MSB
+02A3   3E01           00816         ADDLW 0x01            ; Add 1 to W register
+02A4   1803           00817         BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
+Message[305]: Using default destination of 1 (file).
+02A5   0AA5           00818         INCF TEMP_MSB         ; If there was a carry, increment TEMP_MSB
+02A6   00A4           00819         MOVWF TEMP_LSB        ; Move the result of two's complement to TEMP_LSB
+02A7   0923           00820         COMF R2_MSB, 0        ; Compute the two's complement of R2_MSB
+02A8   0725           00821         ADDWF TEMP_MSB, 0     ; Add 1 to get the two's complement
+02A9   00A5           00822         MOVWF TEMP_MSB        ; Move the result of two's complement to TEMP_MSB
+02AA   0008           00823         RETURN                ; Return from the subroutine
+                      00824 
+02AB                  00825 DIVIDE:
+02AB   01A7           00826         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
+02AC   01A6           00827         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
+02AD   0820           00828         MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
+02AE   00A4           00829         MOVWF TEMP_LSB
+02AF   0821           00830         MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
+02B0   00A5           00831         MOVWF TEMP_MSB
+02B1                  00832 DIVLOOP:
+02B1   2???           00833         CALL SUB              ; Call the SUB subroutine to perform subtraction
+02B2   1C03           00834         BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
+02B3   2???           00835         GOTO DIVEND           ; If no borrow, exit the loop (division complete)
+Message[305]: Using default destination of 1 (file).
+02B4   0AA6           00836         INCF RESULT_LSB       ; Increment the result's Least Significant Byte
+02B5   1903           00837         BTFSC STATUS, 2       ; Check if the register is overflown
+Message[305]: Using default destination of 1 (file).
+02B6   0AA7           00838         INCF RESULT_MSB       ; If it is, increment the result's Most Significant Byte
+02B7   2???           00839         GOTO DIVLOOP          ; Continue the division loop
+02B8                  00840 DIVEND:
+02B8   0008           00841         RETURN                ; Return from the DIVIDE subroutine
+02B9                  00842 MOD:
+02B9   01A7           00843         CLRF RESULT_MSB       ; Clear the result's Most Significant Byte (initialize to 0)
+02BA   01A6           00844         CLRF RESULT_LSB       ; Clear the result's Least Significant Byte (initialize to 0)
+02BB   0820           00845         MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
+02BC   00A4           00846         MOVWF TEMP_LSB
+02BD   0821           00847         MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
+02BE   00A5           00848         MOVWF TEMP_MSB
+02BF                  00849 MODLOOP:
+02BF   2???           00850         CALL SUB              ; Call the SUB subroutine to perform subtraction
+02C0   1C03           00851         BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
+02C1   2???           00852         GOTO MODEND           ; If no borrow, exit the loop (modulo operation complete)
+02C2   2???           00853         GOTO MODLOOP          ; Continue the modulo loop
+                      00854 
+02C3                  00855 MODEND:
+02C3   0822           00856         MOVF R2_LSB, 0        ; Move the value in R2_LSB to W register
+02C4   0724           00857         ADDWF TEMP_LSB, 0     ; Add the value in W to TEMP_LSB (carry ignored as it's not needed)
+02C5   1803           00858         BTFSC STATUS, 0       ; Check if there was a carry from the addition
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Message[305]: Using default destination of 1 (file).
+02C6   0AA7           00859         INCF RESULT_MSB       ; If carry, increment the result's Most Significant Byte
+02C7   00A6           00860         MOVWF RESULT_LSB      ; Move the result of the addition to the result's Least Significant Byte
+                      00861 
+02C8   0823           00862         MOVF R2_MSB, 0        ; Move the value in R2_MSB to W register
+02C9   0725           00863         ADDWF TEMP_MSB, 0     ; Add the value in W to TEMP_MSB (carry ignored as it's not needed)
+Message[305]: Using default destination of 1 (file).
+02CA   07A7           00864         ADDWF RESULT_MSB      ; Add the result of the addition to the result's Most Significant Byte
+                      00865 
+02CB   0008           00866         RETURN                  ; Return from the MOD subroutine              
+                      00867 
+                      00868 ; ==========================================================================
+                      00869 ;                                               INCREMENTS
+                      00870 ;                                                                                         
+                      00871 ; ===========================================================================
+02CC                  00872 check_c1_c3:
+02CC   0829           00873         MOVF C1, 0
+02CD   3C36           00874         SUBLW '6'
+02CE   1903           00875         BTFSC STATUS, Z
+02CF   2???           00876         goto c3_to_five
+02D0   2???           00877         goto c3_to_nine
+02D1                  00878 check_c2_c4:
+02D1   082A           00879         MOVF C2, 0
+02D2   3C35           00880         SUBLW '5'
+02D3   1903           00881         BTFSC STATUS, Z
+02D4   2???           00882         goto check_c1_c4
+02D5   2???           00883         goto c4_to_nine
+02D6                  00884 check_c1_c4:
+02D6   0829           00885         MOVF C1, 0
+02D7   3C36           00886         SUBLW '6'
+02D8   1903           00887         BTFSC STATUS, Z
+02D9   2???           00888         goto c4_to_three
+02DA   2???           00889         goto c4_to_nine
+02DB                  00890 check_c3_c5:
+02DB   082B           00891         MOVF C3, 0
+02DC   3C35           00892         SUBLW '5'
+02DD   1903           00893         BTFSC STATUS, Z
+02DE   2???           00894         goto check_c2_c5
+02DF   2???           00895         goto c5_to_nine
+02E0                  00896 check_c2_c5:
+02E0   082A           00897         MOVF C2, 0
+02E1   3C35           00898         SUBLW '5'
+02E2   1903           00899         BTFSC STATUS, Z
+02E3   2???           00900         goto check_c1_c5
+02E4   2???           00901         goto c5_to_nine
+02E5                  00902 check_c1_c5:
+02E5   0829           00903         MOVF C1, 0
+02E6   3C36           00904         SUBLW '6'
+02E7   1903           00905         BTFSC STATUS, Z
+02E8   2???           00906         goto c5_to_five
+02E9   2???           00907         goto c5_to_nine
+                      00908 
+02EA                  00909 loop:
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+02EA   2???           00910         GOTO loop
+3731                  00911         END                  ; End of the progra
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 20
 
 
 SYMBOL TABLE
@@ -972,8 +1082,9 @@ ADCON1                            0000009F
 ADCS0                             00000006
 ADCS1                             00000007
 ADCS2                             00000006
-ADD                               0000023F
+ADD                               00000294
 ADDEN                             00000003
+ADDITION                          00000034
 ADFM                              00000007
 ADIE                              00000006
 ADIF                              00000006
@@ -987,7 +1098,7 @@ BCLIE                             00000003
 BCLIF                             00000003
 BF                                00000000
 BRGH                              00000002
-BUTTON_INTERUPT                   0000003A
+BUTTON_INTERUPT                   00000077
 C                                 00000000
 C1                                00000029
 C1INV                             00000004
@@ -1016,20 +1127,19 @@ CCP2M2                            00000002
 CCP2M3                            00000003
 CCP2X                             00000005
 CCP2Y                             00000004
-CCPR1                             00000015
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 19
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 21
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCPR1                             00000015
 CCPR1H                            00000016
 CCPR1L                            00000015
 CCPR2                             0000001B
 CCPR2H                            0000001C
 CCPR2L                            0000001B
-CHANGE_OPERATION                  00000046
-CHECK_IF_VISITED                  00000017
+CHANGE_OPERATION                  000000AD
 CHS0                              00000003
 CHS1                              00000004
 CHS2                              00000005
@@ -1056,9 +1166,12 @@ CVRR                              00000005
 D                                 00000005
 DATA_ADDRESS                      00000005
 DC                                00000001
-DIVEND                            00000263
-DIVIDE                            00000256
-DIVLOOP                           0000025C
+DISPLAY_RESULT                    00000026
+DISPLAY_RESULT_END                00000043
+DIVEND                            000002B8
+DIVIDE                            000002AB
+DIVISION                          00000039
+DIVLOOP                           000002B1
 D_A                               00000005
 D_NOT_A                           00000005
 E                                 00000005
@@ -1071,50 +1184,51 @@ EEDATH                            0000010E
 EEIE                              00000004
 EEIF                              00000004
 EEPGD                             00000007
-ENABLE_PULSE                      0000015E
+ENABLE_PULSE                      000001E2
 F                                 00000001
-FERR                              00000002
-FSR                               00000004
-GCEN                              00000007
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 20
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 22
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
 GIE                               00000007
 GO                                00000002
 GO_DONE                           00000002
 GO_NOT_DONE                       00000002
-HexBCD                            000001F9
+HexBCD                            0000024F
 I2C_DATA                          00000005
 I2C_READ                          00000002
 I2C_START                         00000003
 I2C_STOP                          00000004
 IBF                               00000007
 IBOV                              00000005
-INCREMENT_DISPLAY                 0000001B
-INC_C1                            00000078
-INC_C2                            00000082
-INC_C3                            0000009A
-INC_C4                            000000B2
-INC_C5                            000000CA
+INCREMENT_DISPLAY                 0000000F
+INC_C1                            000000F7
+INC_C2                            00000101
+INC_C3                            00000119
+INC_C4                            00000131
+INC_C5                            00000149
 INDF                              00000000
-INIT                              000000F9
-INIT_DISPLAY                      0000013E
+INIT                              00000178
+INIT_DISPLAY                      000001C2
 INTCON                            0000000B
 INTE                              00000004
 INTEDG                            00000006
-INTERUPT_END                      000000E2
-INTERUPT_INIT                     0000010F
+INTERUPT_END                      00000161
+INTERUPT_INIT                     00000193
 INTF                              00000001
-INTITIAL_MESSAGE                  0000018B
+INTITIAL_MESSAGE                  0000020F
 IRP                               00000007
 IS_VISITED                        0000003D
 MCount                            00000038
-MOD                               00000264
-MODEND                            0000026E
-MODLOOP                           0000026A
+MOD                               000002B9
+MODEND                            000002C3
+MODLOOP                           000002BF
+MODULO                            0000003E
 NEXT_STATE                        0000002E
 NOT_A                             00000005
 NOT_ADDRESS                       00000005
@@ -1130,19 +1244,19 @@ NOT_TO                            00000004
 NOT_TX8                           00000006
 NOT_W                             00000002
 NOT_WRITE                         00000002
-NUMBERS_IN                        00000064
-NumbHi                            00000039
-NumbLo                            0000003A
-OBF                               00000006
-OERR                              00000001
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 21
+NUMBERS_IN                        000000CB
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+NUMBERS_IN_2                      000000E3
+NUMHI                             0000003E
+NUMLO                             0000003F
+OBF                               00000006
+OERR                              00000001
 OPERATION                         0000002F
-OPERATION_MENU                    000001CF
 OPTION_REG                        00000081
 P                                 00000004
 PCFG0                             00000000
@@ -1163,7 +1277,7 @@ PORTB                             00000006
 PORTC                             00000007
 PORTD                             00000008
 PORTE                             00000009
-PORTS_INIT                        0000011C
+PORTS_INIT                        000001A0
 PR2                               00000092
 PS0                               00000000
 PS1                               00000001
@@ -1190,16 +1304,16 @@ RB3                               00000003
 RB4                               00000004
 RB5                               00000005
 RB6                               00000006
-RB7                               00000007
-RBIE                              00000003
-RBIF                              00000000
-RC0                               00000000
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 22
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
 RC1                               00000001
 RC2                               00000002
 RC3                               00000003
@@ -1228,12 +1342,12 @@ RE0                               00000000
 RE1                               00000001
 RE2                               00000002
 READ_WRITE                        00000002
-RESET_COUNTER_C1                  000000EA
-RESET_COUNTER_C2                  000000ED
-RESET_COUNTER_C3                  000000F0
-RESET_COUNTER_C4                  000000F3
-RESET_COUNTER_C5                  000000F6
-RESET_TIMER                       0000012D
+RESET_COUNTER_C1                  00000169
+RESET_COUNTER_C2                  0000016C
+RESET_COUNTER_C3                  0000016F
+RESET_COUNTER_C4                  00000172
+RESET_COUNTER_C5                  00000175
+RESET_TIMER                       000001B1
 RESULT_LSB                        00000026
 RESULT_MSB                        00000027
 RP0                               00000005
@@ -1245,20 +1359,21 @@ RX9D                              00000000
 R_NOT_W                           00000002
 R_W                               00000002
 S                                 00000003
-SECOND_MENU                       000001AD
+SAVE_NUMBER_1                     00000081
+SAVE_NUMBER_2                     00000097
 SEN                               00000000
-SEND_LCD_COMMAND                  0000017B
-SEND_LCD_DATA                     0000016B
-SKIP                              00000028
-SMP                               00000007
-SPBRG                             00000099
-SPEN                              00000007
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 23
+SEND_LCD_COMMAND                  000001FF
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 25
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SEND_LCD_DATA                     000001EF
+SKIP                              0000001C
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
 SREN                              00000005
 SSPADD                            00000093
 SSPBUF                            00000013
@@ -1273,10 +1388,9 @@ SSPM2                             00000002
 SSPM3                             00000003
 SSPOV                             00000006
 SSPSTAT                           00000094
-START                             0000010B
-STATE_CHECKER                     0000000F
+START                             00000192
 STATUS                            00000003
-SUB                               0000024A
+SUB                               0000029F
 SYNC                              00000004
 T0CS                              00000005
 T0IE                              00000005
@@ -1308,16 +1422,16 @@ TMR1L                             0000000E
 TMR1ON                            00000000
 TMR2                              00000011
 TMR2IE                            00000001
-TMR2IF                            00000001
-TMR2ON                            00000002
-TOUTPS0                           00000003
-TOUTPS1                           00000004
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 24
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 26
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
 TOUTPS2                           00000005
 TOUTPS3                           00000006
 TRISA                             00000085
@@ -1367,16 +1481,16 @@ TXEN                              00000005
 TXIE                              00000004
 TXIF                              00000004
 TXREG                             00000019
-TXSTA                             00000098
-Temp                              0000003C
-Timer1                            00000070
-TimerX                            00000071
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 25
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 27
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TXSTA                             00000098
+Temp                              0000003C
+Timer1                            00000070
+TimerX                            00000071
 UA                                00000001
 W                                 00000000
 WCOL                              00000007
@@ -1423,41 +1537,38 @@ _WRT_OFF                          00003FFF
 _XT_OSC                           00003FFD
 __16F877A                         00000001
 __DEBUG                           1
-adjBCD                            00000211
-adjDEC                            00000207
-c2_to_five                        00000090
-c2_to_nine                        00000086
-c3_to_five                        000000A8
-c3_to_nine                        0000009E
-c4_to_nine                        000000B6
-MPASM  5.50                          MAIN.ASM   7-26-2023  10:31:29         PAGE 26
+adjBCD                            00000267
+adjDEC                            0000025D
+c2_to_five                        0000010F
+MPASM  5.50                          MAIN.ASM   7-26-2023  19:32:28         PAGE 28
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-c4_to_three                       000000C0
-c5_to_five                        000000D8
-c5_to_nine                        000000CE
-change_state                      00000032
-check_c1_c3                       00000277
-check_c1_c4                       00000281
-check_c1_c5                       00000290
-check_c2_c4                       0000027C
-check_c2_c5                       0000028B
-check_c3_c5                       00000286
-dec2bin16                         0000021C
-div_digit                         0000005E
-hi                                0000003F
-lo                                0000003E
-loop                              00000295
-loop1                             0000013A
-loop16                            000001FF
-loopX                             00000134
-mod_digit                         00000058
-onems                             00000138
-plus_digit                        00000052
-xms                               00000133
+c2_to_nine                        00000105
+c3_to_five                        00000127
+c3_to_nine                        0000011D
+c4_to_nine                        00000135
+c4_to_three                       0000013F
+c5_to_five                        00000157
+c5_to_nine                        0000014D
+check_c1_c3                       000002CC
+check_c1_c4                       000002D6
+check_c1_c5                       000002E5
+check_c2_c4                       000002D1
+check_c2_c5                       000002E0
+check_c3_c5                       000002DB
+dec2bin16                         00000272
+div_digit                         000000C5
+loop                              000002EA
+loop1                             000001BE
+loop16                            00000255
+loopX                             000001B8
+mod_digit                         000000BF
+onems                             000001BC
+plus_digit                        000000B9
+xms                               000001B7
 
 Errors   :     0
 Warnings :     6 reported,     0 suppressed
