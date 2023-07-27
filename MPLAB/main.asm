@@ -203,12 +203,6 @@ DISPLAY_RESULT_END:
 	CALL SEND_LCD_COMMAND
 	MOVLW '='
 	CALL SEND_LCD_DATA
-	SWAPF BCDvalH, 1
-	MOVF BCDvalH, 0
-	ANDLW 0x0F
-	ADDLW '0'
-	CALL SEND_LCD_DATA
-	SWAPF BCDvalH, 1
 	MOVF BCDvalH, 0
 	ANDLW 0x0F
 	ADDLW '0'
@@ -884,16 +878,17 @@ INTITIAL_MESSAGE:
 ;							NUMBERS & CONVERSIONS
 ;											  
 ; ===========================================================================
+
 HexBCD: 
-	movlw d'16'
-	movwf MCount
-	clrf BCDvalH
-	clrf BCDvalM
-	clrf BCDvalL
-	bcf STATUS,C
+	movlw d'16'			; Set the counter to 16
+	movwf MCount 		; Move the counter to MCount
+	clrf BCDvalH 		; Clear the BCD value's Most Significant Byte
+	clrf BCDvalM		; Clear the BCD value's Middle Significant Byte
+	clrf BCDvalL		; Clear the BCD value's Least Significant Byte
+	bcf STATUS,C 		; Clear the carry bit
 
 loop16:  
-	rlf RESULT_LSB,F
+	rlf RESULT_LSB,F 	;
 	rlf RESULT_MSB,F
 	rlf BCDvalL,F
 	rlf BCDvalM,F
@@ -974,6 +969,8 @@ dec2bin16
     addwf NUMHI,F
 
     return            ; Q.E.D.
+
+
 ; ==========================================================================
 ;						ARETHMETIC OPERATIONS 
 ;											  
@@ -1006,12 +1003,20 @@ SUB:
 	RETURN                ; Return from the subroutine
 
 DIVIDE:
-	CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
-	CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
-	MOVF R1_LSB, 0        ; Move the value in R1_LSB to TEMP_LSB (temporary storage)
+	CLRF RESULT_MSB      	; Clear the result's Most Significant Byte
+	CLRF RESULT_LSB      	; Clear the result's Least Significant Byte
+	MOVF R1_LSB, 0       	; Move the value in R1_LSB to TEMP_LSB (temporary storage)
 	MOVWF TEMP_LSB
-	MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
+	MOVF R1_MSB, 0       	; Move the value in R1_MSB to TEMP_MSB (temporary storage)
 	MOVWF TEMP_MSB
+	MOVF R2_LSB, 0        	; Move the value in R2_LSB to W register
+	BTFSC STATUS, Z	   		; Check if the divisor is 0
+	GOTO UPPER_BITS 	; If it is, check the upper bits
+	GOTO DIVLOOP          	; If it isn't, continue the division loop
+UPPER_BITS:
+	MOVF R2_MSB, 0        ; Move the value in R2_MSB to W register
+	BTFSC STATUS, Z       ; Check if the divisor is 0
+	GOTO DIVEND           ; If it is, exit the loop (division complete)
 DIVLOOP:
 	CALL SUB              ; Call the SUB subroutine to perform subtraction
 	BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
@@ -1029,6 +1034,14 @@ MOD:
 	MOVWF TEMP_LSB
 	MOVF R1_MSB, 0        ; Move the value in R1_MSB to TEMP_MSB (temporary storage)
 	MOVWF TEMP_MSB
+	MOVF R2_LSB, 0        	; Move the value in R2_LSB to W register
+	BTFSC STATUS, Z	   		; Check if the divisor is 0
+	GOTO UPPER_BITS_M 	; If it is, check the upper bits
+	GOTO MODLOOP          	; If it isn't, continue the division loop
+UPPER_BITS_M:
+	MOVF R2_MSB, 0        ; Move the value in R2_MSB to W register
+	BTFSC STATUS, Z       ; Check if the divisor is 0
+	GOTO MODEND           ; If it is, exit the loop (division complete)
 MODLOOP:
 	CALL SUB              ; Call the SUB subroutine to perform subtraction
 	BTFSS STATUS, 0       ; Check if there was a borrow (no carry) from the previous subtraction
