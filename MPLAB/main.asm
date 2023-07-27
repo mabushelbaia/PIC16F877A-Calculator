@@ -45,6 +45,7 @@ R2_C2 EQU 0x46
 R2_C3 EQU 0x47
 R2_C4 EQU 0x48
 R2_C5 EQU 0x49
+CARRY_SAVED EQU 0x4B
 TEMP_W EQU 0x28       ; Define the memory location for unused temporary storage (not used in this code)
 ; ---------------------------------------------------
 ; ----------- 			Code Area 		  -----------
@@ -203,6 +204,12 @@ DISPLAY_RESULT_END:
 	CALL SEND_LCD_COMMAND
 	MOVLW '='
 	CALL SEND_LCD_DATA
+	; SWAPF BCDvalH, 1
+	; MOVF BCDvalH, 0
+	; ANDLW 0x0F
+	; ADDLW '0'
+	; CALL SEND_LCD_DATA
+	; SWAPF BCDvalH, 1
 	MOVF BCDvalH, 0
 	ANDLW 0x0F
 	ADDLW '0'
@@ -775,6 +782,22 @@ KEEP_NUMBERS:
 	CALL SEND_LCD_DATA
 	MOVLW 'P'
 	CALL SEND_LCD_DATA
+	MOVLW 'E'
+	CALL SEND_LCD_DATA
+	MOVLW 'R'
+	CALL SEND_LCD_DATA
+	MOVLW 'A'
+	CALL SEND_LCD_DATA
+	MOVLW 'T'
+	CALL SEND_LCD_DATA
+	MOVLW 'I'
+	CALL SEND_LCD_DATA
+	MOVLW 'O'
+	CALL SEND_LCD_DATA
+	MOVLW 'N'
+	CALL SEND_LCD_DATA
+	MOVLW ':'
+	CALL SEND_LCD_DATA
 	MOVLW 0xC0
 	MOVWF CURSOR
 	CALL SEND_LCD_COMMAND
@@ -978,6 +1001,7 @@ dec2bin16
 ADD:
 	CLRF RESULT_LSB       ; Clear the result's Least Significant Byte
 	CLRF RESULT_MSB       ; Clear the result's Most Significant Byte
+	CLRF CARRY_SAVED		;
 	MOVF R1_LSB, 0        ; Move the value in R1_LSB to W register
 	ADDWF R2_LSB, 0       ; Add the value in W to R2_LSB (result in R2_LSB with no carry)
 	BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
@@ -986,6 +1010,8 @@ ADD:
 	MOVF R1_MSB, 0        ; Move the value in R1_MSB to W register
 	ADDWF R2_MSB, 0       ; Add the value in W to R2_MSB (result in R2_MSB with carry)
 	ADDWF RESULT_MSB      ; Add the result of addition to the result's Most Significant Byte
+	BTFSC STATUS, 0       ; Check if there was a carry from the previous addition
+	INCF CARRY_SAVED	  ; If carry, increment the carry
 	RETURN               ; Return from the subroutine
 
 SUB:
@@ -1005,6 +1031,7 @@ SUB:
 DIVIDE:
 	CLRF RESULT_MSB      	; Clear the result's Most Significant Byte
 	CLRF RESULT_LSB      	; Clear the result's Least Significant Byte
+	CLRF CARRY_SAVED
 	MOVF R1_LSB, 0       	; Move the value in R1_LSB to TEMP_LSB (temporary storage)
 	MOVWF TEMP_LSB
 	MOVF R1_MSB, 0       	; Move the value in R1_MSB to TEMP_MSB (temporary storage)
@@ -1026,6 +1053,8 @@ DIVLOOP:
 	INCF RESULT_MSB       ; If it is, increment the result's Most Significant Byte
 	GOTO DIVLOOP          ; Continue the division loop
 DIVEND:
+	BTFSC STATUS, 2       ; Check if the register is overflown
+	INCF CARRY_SAVED	  ; If it is, increment the carry
 	RETURN                ; Return from the DIVIDE subroutine
 MOD:
 	CLRF RESULT_MSB       ; Clear the result's Most Significant Byte (initialize to 0)
@@ -1049,6 +1078,8 @@ MODLOOP:
 	GOTO MODLOOP          ; Continue the modulo loop
 
 MODEND:
+	BTFSC STATUS, 2       ; Check if the register is overflown
+	INCF CARRY_SAVED	  ; If it is, increment the carry
 	MOVF R2_LSB, 0        ; Move the value in R2_LSB to W register
 	ADDWF TEMP_LSB, 0     ; Add the value in W to TEMP_LSB (carry ignored as it's not needed)
 	BTFSC STATUS, 0       ; Check if there was a carry from the addition
