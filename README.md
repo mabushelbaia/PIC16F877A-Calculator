@@ -7,7 +7,7 @@
 
 
 # Project Description
-A PIC16f877A based calculator that can perform basic arithmetic operations (Addition, Division, and Modulo) and displays the result on a 16x2 LCD Screen interfaced with only 1 push button, written in assembly.
+A PIC16f877A based calculator that can perform basic arithmetic operations (Addition, Division, and Modulo) and displays the result on a 16x2 LCD Screen interfaced with only 1 push button, written in PIC assembly `main.asm`.
 
 # Circuit
 ![circuit_](docs/design.png)
