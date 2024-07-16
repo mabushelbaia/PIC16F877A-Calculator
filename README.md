@@ -1,5 +1,4 @@
 # PIC16F877A Calculator
-Leave a star 🙂
 <br>
 🔗 | [Project Statment](docs/project.pdf) <br>
 🔗 | [Design](docs/design.pdf) <br>
